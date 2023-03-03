@@ -6,7 +6,7 @@ A compilation of data analysis and visualization projects and challenges done to
 ### [8 Week SQL Challenge](https://github.com/ajchen97/data-analysis-and-visualization-projects/tree/main/8-week-sql-challenge)
 A series of case studies curated by [Data with Danny](https://www.datawithdanny.com/) to practice SQL.
 ### Scavenger Hunt Handbook
-A notebook on [Kaggle](https://www.kaggle.com/code/rtatman/sql-scavenger-hunt-handbook/notebook) created to practice SQL by focusing on specific commands.
+A [Kaggle](https://www.kaggle.com/code/rtatman/sql-scavenger-hunt-handbook/notebook) notebook with SQL practice problems focusing on specific commands.
 
 ## Python
 ### World Happiness Report
