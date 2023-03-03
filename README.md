@@ -9,7 +9,7 @@ A series of case studies curated by [Data with Danny](https://www.datawithdanny.
 A [Kaggle](https://www.kaggle.com/code/rtatman/sql-scavenger-hunt-handbook/notebook) notebook with SQL practice problems focusing on specific commands.
 
 ## Python
-### World Happiness Report
+### [World Happiness Report](https://github.com/ajchen97/data-analysis-and-visualization-projects/tree/main/world-happiness-report)
 ### [Mean-Variance-Standard Deviation Calculator](https://github.com/ajchen97/data-analysis-and-visualization-projects/tree/main/mean-variance-std-dev-calculator)
 ### Demographic Data Analyzer
 ### Medical Data Visualizer
