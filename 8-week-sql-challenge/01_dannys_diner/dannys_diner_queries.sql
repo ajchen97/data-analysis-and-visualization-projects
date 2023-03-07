@@ -144,7 +144,8 @@ WITH points AS (
   ON sales.product_id = menu.product_id
   ORDER BY sales.customer_id, sales.order_date)
 
-SELECT customer_id, SUM(points)
+SELECT customer_id, 
+  SUM(points) AS total_points
 FROM points
 WHERE customer_id in ('A', 'B')
   AND EXTRACT('month' FROM order_date) = '01'
