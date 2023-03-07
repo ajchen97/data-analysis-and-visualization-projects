@@ -18,7 +18,7 @@ GROUP BY 1;
 
 
 -- 3. What was the first item from the menu purchased by each customer?
-SELECT customer_id, product_name
+SELECT DISTINCT customer_id, product_name
 FROM (
   SELECT *,
   	RANK() OVER (PARTITION BY customer_id ORDER BY order_date) AS ranking
