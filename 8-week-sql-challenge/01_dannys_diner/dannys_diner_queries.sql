@@ -1,4 +1,5 @@
 -- https://8weeksqlchallenge.com/case-study-1/
+-- PostgreSQL
 
 -- 1. What is the total amount each customer spent at the restaurant?
 SELECT sales.customer_id AS customer_id, 
