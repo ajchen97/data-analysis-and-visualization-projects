@@ -1,4 +1,4 @@
-## Case Study #1 - Danny's Diner Questions & Answers
+## [Case Study #1](https://8weeksqlchallenge.com/case-study-1/) - Danny's Diner Questions & Answers
 **1. What is the total amount each customer spent at the restaurant?**
 - Customer A: $76
 - Customer B: $74
