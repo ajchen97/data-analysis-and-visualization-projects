@@ -13,8 +13,8 @@ A series of case studies curated by [Data with Danny](https://www.datawithdanny.
 - Clique Bait
 - Balanced Tree Clothing Co
 - Fresh Segments
-### Scavenger Hunt Handbook??
-A [Kaggle](https://www.kaggle.com/code/rtatman/sql-scavenger-hunt-handbook/notebook) notebook with SQL practice problems focusing on specific commands using BigQuery.
+### Scavenger Hunt Handbook
+A [Kaggle](https://www.kaggle.com/code/rtatman/sql-scavenger-hunt-handbook/notebook) notebook of SQL practice problems focusing on specific commands using BigQuery and Python in Kaggle Kernel.
 
 ## Python
 ### [World Happiness Report](https://github.com/ajchen97/data-analysis-and-visualization-projects/tree/main/world-happiness-report)
