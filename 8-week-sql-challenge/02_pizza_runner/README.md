@@ -81,4 +81,4 @@ Danny started by recruiting “runners” to deliver fresh pizza from Pizza Runn
   1. If Danny wants to expand his range of pizzas - how would this impact the existing data design? Write an INSERT statement to demonstrate what would happen if a new Supreme pizza with all the toppings was added to the Pizza Runner menu? </details>
   
 ## Notes
-Before I start on the questions, the data needs to be cleaned and transformed to improve the accuracy and consistency of the data. You can find the steps I have taken [here](https://github.com/ajchen97/data-analysis-and-visualization-projects/blob/main/8-week-sql-challenge/02_pizza_runner/pizza_runner_data_cleaning.md).
+Before I start on the questions, the data needs to be cleaned and transformed to improve the accuracy and consistency of the data. I will use the resulting cleaned data to query from. You can find the steps I have taken to clean the data [here](https://github.com/ajchen97/data-analysis-and-visualization-projects/blob/main/8-week-sql-challenge/02_pizza_runner/pizza_runner_data_cleaning.md).
