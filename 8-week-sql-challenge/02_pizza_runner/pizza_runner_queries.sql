@@ -1,12 +1,14 @@
 -- https://8weeksqlchallenge.com/case-study-2/
--- clean data: https://github.com/ajchen97/data-analysis-and-visualization-projects/blob/main/8-week-sql-challenge/02_pizza_runner/pizza_runner_data_cleaning.md
 -- PostgreSQL
 
 -- A. Pizza Metrics
 -- 1. How many pizzas were ordered?
-
+SELECT COUNT(*) AS total_pizzas
+FROM customer_orders_temp;
 
 -- 2. How many unique customer orders were made?
+SELECT COUNT(DISTINCT order_id) AS unique_orders
+FROM customer_orders_temp;
 
 -- 3. How many successful orders were delivered by each runner?
 
