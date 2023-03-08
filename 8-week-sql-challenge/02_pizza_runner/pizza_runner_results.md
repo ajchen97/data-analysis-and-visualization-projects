@@ -2,10 +2,10 @@
 
 ### A. Pizza Metrics
 **1. How many pizzas were ordered?**
-- s
+
 
 **2. How many unique customer orders were made?**
-- s
+
 
 **3. How many successful orders were delivered by each runner?**
 **4. How many of each type of pizza was delivered?**
