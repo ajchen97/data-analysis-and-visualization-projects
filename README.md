@@ -5,6 +5,8 @@ A compilation of data analysis and visualization projects and challenges done to
 ## SQL
 ### [8 Week SQL Challenge](https://github.com/ajchen97/data-analysis-and-visualization-projects/tree/main/8-week-sql-challenge)
 A series of case studies curated by [Data with Danny](https://www.datawithdanny.com/) to practice SQL.
+<details> <summary> Case Studies </summary>
+
 - Danny's Diner
 - Pizza Runner
 - Foodie-Fi
@@ -12,7 +14,8 @@ A series of case studies curated by [Data with Danny](https://www.datawithdanny.
 - Data Mart
 - Clique Bait
 - Balanced Tree Clothing Co
-- Fresh Segments
+- Fresh Segments </details>
+
 ### Scavenger Hunt Handbook
 A [Kaggle](https://www.kaggle.com/code/rtatman/sql-scavenger-hunt-handbook/notebook) notebook of SQL practice problems focusing on specific commands using BigQuery and Python in Kaggle Kernel.
 
