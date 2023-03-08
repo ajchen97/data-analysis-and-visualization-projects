@@ -1,9 +1,11 @@
-/** customer_orders table
+# [Case Study #2](https://8weeksqlchallenge.com/case-study-2/) - Pizza Runner Data Cleaning
+
+## customer_orders table
 - create a temporary table using a select statement
 - 'exclusions': use CASE to replace any 'null' string values or '' string values with NULL value and convert the string into an array of integers
 - 'extras': use CASE to replace any 'null' string values or '' string values with NULL value and convert the string into an array of integers
-**/
 
+```sql
 DROP TABLE IF EXISTS customer_orders_temp;
 
 CREATE TEMP TABLE customer_orders_temp AS (
@@ -17,15 +19,16 @@ CREATE TEMP TABLE customer_orders_temp AS (
     order_time
   FROM pizza_runner.customer_orders
 ); 
+```
 
-/** runner_orders table
+## runner_orders table
 - create a temporary table using a select statement
 - 'pickup_time': use CASE to replace any 'null' string values or '' string values with NULL value, then convert to datatype to timestamp
 - 'distance': use CASE to replace any 'null' string values or '' string values with NULL value and TRIM to remove any strings then convert datatype to real
 - 'duration': use CASE to replace any 'null' string values or '' string values with NULL value and TRIM to remove any strings then convert datatype to integer
 - 'cancellation': use CASE to replace any 'null' string values or '' string values with NULL value
-**/
 
+```sql
 DROP TABLE IF EXISTS runner_orders_temp; 
 
 CREATE TEMP TABLE runner_orders_temp AS (
@@ -40,12 +43,14 @@ CREATE TEMP TABLE runner_orders_temp AS (
     CASE WHEN cancellation = 'null' or cancellation = '' THEN NULL
     ELSE cancellation END AS cancellation
   FROM pizza_runner.runner_orders
-);
+); 
+```
 
-/** pizza_recipes table
+## pizza_recipes table
 - create a temporary table using a select statement
-- 'toppings': use CASE to replace any 'null' string values or '' string values with NULL value and convert string to an array of integers **/
+- 'toppings': use CASE to replace any 'null' string values or '' string values with NULL value and convert string to an array of integers
 
+```sql
 DROP TABLE IF EXISTS pizza_recipes_temp; 
 
 CREATE TEMP TABLE pizza_recipes_temp AS (
@@ -53,4 +58,5 @@ CREATE TEMP TABLE pizza_recipes_temp AS (
 	CASE WHEN toppings = 'null' or toppings = '' THEN NULL
   	ELSE STRING_TO_ARRAY(toppings, ',')::int[] END AS toppings
   FROM pizza_runner.pizza_recipes
-);
+); 
+```
