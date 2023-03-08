@@ -48,7 +48,8 @@ WHERE purchase_count = (
   
 -- 5. Which item was the most popular for each customer?
 WITH items AS (
-  SELECT customer_id, product_name,
+  SELECT customer_id, 
+	product_name,
   	COUNT(product_name) AS purchases
   FROM dannys_diner.sales
   LEFT JOIN dannys_diner.menu
@@ -56,7 +57,9 @@ WITH items AS (
   GROUP BY 1,2
   ORDER BY 1,3 DESC),
 ranking AS (
-  SELECT customer_id, product_name, purchases,
+  SELECT customer_id, 
+	product_name, 
+	purchases,
   	RANK() OVER (PARTITION BY customer_id ORDER BY purchases DESC) AS ranking
   FROM items)
 
@@ -75,7 +78,7 @@ WITH customers AS (
   FROM dannys_diner.sales
   JOIN dannys_diner.members
   ON sales.customer_id = members.customer_id
-   AND members.join_date <= sales.order_date
+    AND members.join_date <= sales.order_date
   JOIN dannys_diner.menu
   ON sales.product_id = menu.product_id
   ORDER BY sales.customer_id, sales.order_date)
@@ -88,13 +91,14 @@ WHERE ranking = 1;
 -- 7. Which item was purchased just before the customer became a member?
 WITH customers AS (
   SELECT sales.customer_id AS customer_id, 
-      sales.order_date, members.join_date,
+      sales.order_date, 
+      members.join_date,
       menu.product_name AS product_name,
       RANK() OVER (PARTITION BY sales.customer_id ORDER BY sales.order_date DESC) AS ranking
   FROM dannys_diner.sales
   JOIN dannys_diner.members
   ON sales.customer_id = members.customer_id
-   AND members.join_date > sales.order_date
+    AND members.join_date > sales.order_date
   JOIN dannys_diner.menu
   ON sales.product_id = menu.product_id
   ORDER BY sales.customer_id)
