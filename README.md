@@ -4,7 +4,8 @@ A compilation of data analysis and visualization projects and challenges done to
 
 ## SQL
 ### [8 Week SQL Challenge](https://github.com/ajchen97/data-analysis-and-visualization-projects/tree/main/8-week-sql-challenge)
-<details> <summary> A series of case studies curated by [Data with Danny](https://www.datawithdanny.com/) to practice SQL. </summary>
+A series of case studies curated by [Data with Danny](https://www.datawithdanny.com/) to practice SQL. 
+<details> <summary> Case Studies </summary>
 
 - Danny's Diner
 - Pizza Runner
