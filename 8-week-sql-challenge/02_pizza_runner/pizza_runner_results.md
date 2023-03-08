@@ -1,4 +1,4 @@
-## [Case Study #2](https://8weeksqlchallenge.com/case-study-2/) - Pizza Runner Solutions
+## [Case Study #2](https://8weeksqlchallenge.com/case-study-2/) - Pizza Runner Results
 
 ### A. Pizza Metrics
 **1. How many pizzas were ordered?**
