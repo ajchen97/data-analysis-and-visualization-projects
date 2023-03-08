@@ -1,7 +1,7 @@
 # [Case Study #2](https://8weeksqlchallenge.com/case-study-2/) - Pizza Runner Data Cleaning
 
 ## customer_orders table
-- create a temporary table using a select statement
+- create a temporary table 'customer_orders_temp' using a select statement
 - 'exclusions': use CASE to replace any 'null' string values or '' string values with NULL value and convert the string into an array of integers
 - 'extras': use CASE to replace any 'null' string values or '' string values with NULL value and convert the string into an array of integers
 
@@ -22,7 +22,7 @@ CREATE TEMP TABLE customer_orders_temp AS (
 ```
 
 ## runner_orders table
-- create a temporary table using a select statement
+- create a temporary table 'runner_orders_temp' using a select statement
 - 'pickup_time': use CASE to replace any 'null' string values or '' string values with NULL value, then convert to datatype to timestamp
 - 'distance': use CASE to replace any 'null' string values or '' string values with NULL value and TRIM to remove any strings then convert datatype to real
 - 'duration': use CASE to replace any 'null' string values or '' string values with NULL value and TRIM to remove any strings then convert datatype to integer
@@ -47,7 +47,7 @@ CREATE TEMP TABLE runner_orders_temp AS (
 ```
 
 ## pizza_recipes table
-- create a temporary table using a select statement
+- create a temporary table 'pizza_recipes_temp' using a select statement
 - 'toppings': use CASE to replace any 'null' string values or '' string values with NULL value and convert string to an array of integers
 
 ```sql
