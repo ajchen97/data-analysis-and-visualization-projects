@@ -7,9 +7,9 @@ Danny wants to use the data to answer a few simple questions about his customers
 He plans on using these insights to help him decide whether he should expand the existing customer loyalty program - additionally he needs help to generate some basic datasets so his team can easily inspect the data without needing to use SQL.
 
 ## Datasets
-- **sales:** captures all customer_id level purchases with an corresponding order_date and product_id information for when and what menu items were ordered
-- **menu:** maps the product_id to the actual product_name and price of each menu item
-- **members:** captures the join_date when a customer_id joined the beta version of the Danny’s Diner loyalty program
+- **`sales`:** captures all customer_id level purchases with an corresponding order_date and product_id information for when and what menu items were ordered
+- **`menu`:** maps the product_id to the actual product_name and price of each menu item
+- **`members`:** captures the join_date when a customer_id joined the beta version of the Danny’s Diner loyalty program
 
 ## Entity Relationship Diagram  
 <p align="center"> <img src="https://user-images.githubusercontent.com/19737483/223598178-7dca9b22-775d-43f2-9180-5146937975e4.png" alt="Image">
