@@ -3,7 +3,7 @@
 
 -- 1. What is the total amount each customer spent at the restaurant?
 SELECT sales.customer_id AS customer_id, 
-  SUM(menu.price) AS total_spent
+    SUM(menu.price) AS total_spent
 FROM dannys_diner.sales
 LEFT JOIN dannys_diner.menu
 ON sales.product_id = menu.product_id
@@ -13,7 +13,7 @@ ORDER BY 1;
 
 -- 2. How many days has each customer visited the restaurant?
 SELECT customer_id, 
-  COUNT(DISTINCT order_date) AS days_visited
+    COUNT(DISTINCT order_date) AS days_visited
 FROM dannys_diner.sales
 GROUP BY 1;
 
@@ -78,7 +78,7 @@ WITH customers AS (
   FROM dannys_diner.sales
   JOIN dannys_diner.members
   ON sales.customer_id = members.customer_id
-    AND members.join_date <= sales.order_date
+      AND members.join_date <= sales.order_date
   JOIN dannys_diner.menu
   ON sales.product_id = menu.product_id
   ORDER BY sales.customer_id, sales.order_date)
@@ -98,7 +98,7 @@ WITH customers AS (
   FROM dannys_diner.sales
   JOIN dannys_diner.members
   ON sales.customer_id = members.customer_id
-    AND members.join_date > sales.order_date
+      AND members.join_date > sales.order_date
   JOIN dannys_diner.menu
   ON sales.product_id = menu.product_id
   ORDER BY sales.customer_id)
@@ -110,12 +110,12 @@ WHERE ranking = 1;
 
 -- 8. What is the total items and amount spent for each member before they became a member?
 SELECT sales.customer_id AS customer_id, 
-  COUNT(menu.product_name) AS total_items,
-  SUM(menu.price) AS total_spent
+    COUNT(menu.product_name) AS total_items,
+    SUM(menu.price) AS total_spent
 FROM dannys_diner.sales
 JOIN dannys_diner.members
 ON sales.customer_id = members.customer_id
-  AND members.join_date > sales.order_date
+    AND members.join_date > sales.order_date
 JOIN dannys_diner.menu
 ON sales.product_id = menu.product_id
 GROUP BY 1
@@ -124,7 +124,7 @@ ORDER BY 1;
 
 -- 9.  If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
 SELECT sales.customer_id,
-  SUM(CASE WHEN menu.product_name = 'sushi' THEN 20*menu.price ELSE 10*menu.price END) AS points
+    SUM(CASE WHEN menu.product_name = 'sushi' THEN 20*menu.price ELSE 10*menu.price END) AS points
 FROM dannys_diner.sales
 JOIN dannys_diner.menu
 ON sales.product_id = menu.product_id
@@ -140,8 +140,8 @@ WITH points AS (
       menu.product_name, 
       menu.price,
       CASE WHEN (sales.order_date < members.join_date OR sales.order_date > members.join_date + 7) AND menu.product_name = 'sushi' THEN 20*menu.price
-        WHEN (sales.order_date < members.join_date OR sales.order_date > members.join_date + 7) AND menu.product_name != 'sushi' THEN 10*menu.price 
-        WHEN sales.order_date BETWEEN members.join_date AND members.join_date + 7 THEN 20*menu.price END AS points
+          WHEN (sales.order_date < members.join_date OR sales.order_date > members.join_date + 7) AND menu.product_name != 'sushi' THEN 10*menu.price 
+          WHEN sales.order_date BETWEEN members.join_date AND members.join_date + 7 THEN 20*menu.price END AS points
   FROM dannys_diner.sales
   JOIN dannys_diner.members
   ON sales.customer_id = members.customer_id
@@ -150,8 +150,8 @@ WITH points AS (
   ORDER BY sales.customer_id, sales.order_date)
 
 SELECT customer_id, 
-  SUM(points) AS total_points
+    SUM(points) AS total_points
 FROM points
 WHERE customer_id in ('A', 'B')
-  AND EXTRACT('month' FROM order_date) = '01'
+    AND EXTRACT('month' FROM order_date) = '01'
 GROUP BY 1;
