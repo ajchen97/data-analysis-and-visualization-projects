@@ -6,23 +6,76 @@
 SELECT COUNT(*) AS total_pizzas
 FROM customer_orders_temp;
 
+
 -- 2. How many unique customer orders were made?
 SELECT COUNT(DISTINCT order_id) AS unique_orders
 FROM customer_orders_temp;
 
+
 -- 3. How many successful orders were delivered by each runner?
+SELECT runner_id, COUNT(*) AS successful_orders
+FROM runner_orders_temp
+WHERE cancellation IS NULL
+GROUP BY 1
+ORDER BY 1;
 
 
 -- 4. How many of each type of pizza was delivered?
+SELECT p.pizza_name,
+    COUNT(p.pizza_id) AS num_delivered
+FROM customer_orders_temp c
+JOIN pizza_runner.pizza_names p
+ON c.pizza_id = p.pizza_id
+JOIN runner_orders_temp r
+ON c.order_id = r.order_id
+  AND r.cancellation IS NULL
+GROUP BY 1;
 
 
 -- 5. How many Vegetarian and Meatlovers were ordered by each customer?
-
+SELECT c.customer_id, 
+    p.pizza_name,
+    COUNT(p.pizza_id) AS num_ordered
+FROM customer_orders_temp c
+JOIN pizza_runner.pizza_names p
+ON c.pizza_id = p.pizza_id
+GROUP BY 1,2 
+ORDER BY 1;
 
 -- 6. What was the maximum number of pizzas delivered in a single order?
+WITH pizzas_delivered AS (
+  SELECT c.order_id, 
+	COUNT(c.order_id) AS num_delivered
+  FROM customer_orders_temp c 
+  JOIN runner_orders_temp r
+  ON c.order_id = r.order_id
+      AND r.cancellation IS NULL
+  GROUP BY 1
+  ORDER BY 1)
+
+SELECT MAX(num_delivered) AS max_delivered
+FROM pizzas_delivered;
 
 
 -- 7. For each customer, how many delivered pizzas had at least 1 change and how many had no changes?
+WITH changes AS (
+  SELECT c.customer_id AS customer_id,
+  	  c.pizza_id AS pizza_id, 
+      CASE WHEN c.exclusions IS NOT NULL or c.extras IS NOT NULL THEN 1
+          ELSE 0 END AS changes
+  FROM customer_orders_temp c
+  JOIN runner_orders_temp r
+  ON c.order_id = r.order_id
+      AND r.cancellation IS NULL
+  ORDER BY c.customer_id)
+
+SELECT customer_id, 
+	COUNT(changes) FILTER (WHERE changes = 1) AS any_changes,
+    COUNT(changes) FILTER (WHERE changes = 0) AS no_changes
+FROM changes
+GROUP BY 1;
+
+
 -- 8. How many pizzas were delivered that had both exclusions and extras?
 -- 9. What was the total volume of pizzas ordered for each hour of the day?
 -- 10. What was the volume of orders for each day of the week?
