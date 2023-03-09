@@ -21,8 +21,8 @@
 **4. How many of each type of pizza was delivered?**
 | pizza_name | num_delivered |
 | ---------- | ------------- |
-| Meatlovers | 10            |
-| Vegetarian | 4             |
+| Vegetarian | 3             |
+| Meatlovers | 9             |
 
 **5. How many Vegetarian and Meatlovers were ordered by each customer?**
 | customer_id | pizza_name | num_ordered |
@@ -42,8 +42,21 @@
 | 3             |
 
 **7. For each customer, how many delivered pizzas had at least 1 change and how many had no changes?**
+| customer_id | any_changes | no_changes |
+| ----------- | ----------- | ----------- |
+| 101         | 0           | 2           |
+| 102         | 0           | 3           |
+| 103         | 3           | 0           |
+| 104         | 2           | 1           |
+| 105         | 1           | 0           |
+
+
 **8. How many pizzas were delivered that had both exclusions and extras?**
+
+
 **9. What was the total volume of pizzas ordered for each hour of the day?**
+
+
 **10. What was the volume of orders for each day of the week?**
 
 ### B. Runner and Customer Experience
