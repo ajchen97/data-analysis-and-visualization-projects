@@ -1,9 +1,9 @@
 # [Case Study #2](https://8weeksqlchallenge.com/case-study-2/) - Pizza Runner Data Cleaning
 
 ## customer_orders table
-- create a temporary table 'customer_orders_temp' using a select statement
-- 'exclusions' column: use CASE to replace any 'null' string values or '' string values with NULL value and convert the string into an array of integers
-- 'extras' column: use CASE to replace any 'null' string values or '' string values with NULL value and convert the string into an array of integers
+- create a temporary table `customer_orders_temp` using a select statement
+- `exclusions` column: use CASE to replace any 'null' string values or '' string values with NULL value and convert the string into an array of integers
+- `extras` column: use CASE to replace any 'null' string values or '' string values with NULL value and convert the string into an array of integers
 
 ```sql
 DROP TABLE IF EXISTS customer_orders_temp;
@@ -20,11 +20,11 @@ CREATE TEMP TABLE customer_orders_temp AS (
 ```
 
 ## runner_orders table
-- create a temporary table 'runner_orders_temp' using a select statement
-- 'pickup_time' column: use CASE to replace any 'null' string values or '' string values with NULL value, then convert to datatype to timestamp
-- 'distance' column: use CASE to replace any 'null' string values or '' string values with NULL value and TRIM to remove any strings then convert datatype to real
-- 'duration' column: use CASE to replace any 'null' string values or '' string values with NULL value and TRIM to remove any strings then convert datatype to integer
-- 'cancellation' column: use CASE to replace any 'null' string values or '' string values with NULL value
+- create a temporary table `runner_orders_temp` using a select statement
+- `pickup_time` column: use CASE to replace any 'null' string values or '' string values with NULL value, then convert to datatype to timestamp
+- `distance` column: use CASE to replace any 'null' string values or '' string values with NULL value and TRIM to remove any strings then convert datatype to real
+- `duration` column: use CASE to replace any 'null' string values or '' string values with NULL value and TRIM to remove any strings then convert datatype to integer
+- `cancellation` column: use CASE to replace any 'null' string values or '' string values with NULL value
 
 ```sql
 DROP TABLE IF EXISTS runner_orders_temp; 
@@ -41,8 +41,8 @@ CREATE TEMP TABLE runner_orders_temp AS (
 ```
 
 ## pizza_recipes table
-- create a temporary table 'pizza_recipes_temp' using a select statement
-- 'toppings' column: use CASE to replace any 'null' string values or '' string values with NULL value and convert string to an array of integers
+- create a temporary table `pizza_recipes_temp` using a select statement
+- `toppings` column: use CASE to replace any 'null' string values or '' string values with NULL value and convert string to an array of integers
 
 ```sql
 DROP TABLE IF EXISTS pizza_recipes_temp; 
