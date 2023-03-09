@@ -2,15 +2,45 @@
 
 ### A. Pizza Metrics
 **1. How many pizzas were ordered?**
-
+| total_pizzas |
+| ------------ |
+| 14           |
 
 **2. How many unique customer orders were made?**
-
+| unique_orders |
+| ------------- |
+| 10            |
 
 **3. How many successful orders were delivered by each runner?**
+| runner_id | successful_orders |
+| --------- | ----------------- |
+| 1         | 4                 |
+| 2         | 3                 |
+| 3         | 1                 |
+
 **4. How many of each type of pizza was delivered?**
+| pizza_name | num_delivered |
+| ---------- | ------------- |
+| Meatlovers | 10            |
+| Vegetarian | 4             |
+
 **5. How many Vegetarian and Meatlovers were ordered by each customer?**
+| customer_id | pizza_name | num_ordered |
+| ----------- | ---------- | ----------- |
+| 101         | Meatlovers | 2           |
+| 101         | Vegetarian | 1           |
+| 102         | Meatlovers | 2           |
+| 102         | Vegetarian | 1           |
+| 103         | Meatlovers | 3           |
+| 103         | Vegetarian | 1           |
+| 104         | Meatlovers | 3           |
+| 105         | Vegetarian | 1           |
+
 **6. What was the maximum number of pizzas delivered in a single order?**
+| max_delivered |
+| ------------- |
+| 3             |
+
 **7. For each customer, how many delivered pizzas had at least 1 change and how many had no changes?**
 **8. How many pizzas were delivered that had both exclusions and extras?**
 **9. What was the total volume of pizzas ordered for each hour of the day?**
