@@ -50,14 +50,29 @@
 | 104         | 2           | 1           |
 | 105         | 1           | 0           |
 
-
 **8. How many pizzas were delivered that had both exclusions and extras?**
-
+| both_changes_pizzas |
+| ------------------- |
+| 3                   |
 
 **9. What was the total volume of pizzas ordered for each hour of the day?**
-
+| hour_of_day | pizzas_ordered |
+| ----------- | -------------- |
+| 11          | 1              |
+| 13          | 3              |
+| 18          | 3              |
+| 19          | 1              |
+| 21          | 3              |
+| 23          | 3              |
 
 **10. What was the volume of orders for each day of the week?**
+| day_of_week | pizzas_ordered |
+| ----------- | -------------- |
+| Friday      | 1              |
+| Thursday    | 3              |
+| Saturday    | 5              |
+| Wednesday   | 5              |
+
 
 ### B. Runner and Customer Experience
 **1. How many runners signed up for each 1 week period? (i.e. week starts 2021-01-01)**
