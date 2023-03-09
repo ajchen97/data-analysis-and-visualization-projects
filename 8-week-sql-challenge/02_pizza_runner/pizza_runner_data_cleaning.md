@@ -12,10 +12,8 @@ CREATE TEMP TABLE customer_orders_temp AS (
   SELECT order_id,
   	customer_id,
   	pizza_id, 
-  	CASE WHEN exclusions = 'null' or exclusions = '' THEN NULL
-  	ELSE STRING_TO_ARRAY(exclusions, ',')::int[] END AS exclusions,
-   	CASE WHEN extras = 'null' or extras = '' THEN NULL
-  	ELSE STRING_TO_ARRAY(extras, ',')::int[] END AS extras,
+  	CASE WHEN exclusions = 'null' or exclusions = '' THEN NULL ELSE STRING_TO_ARRAY(exclusions, ',')::int[] END AS exclusions,
+   	CASE WHEN extras = 'null' or extras = '' THEN NULL ELSE STRING_TO_ARRAY(extras, ',')::int[] END AS extras,
     order_time
   FROM pizza_runner.customer_orders
 ); 
@@ -34,14 +32,10 @@ DROP TABLE IF EXISTS runner_orders_temp;
 CREATE TEMP TABLE runner_orders_temp AS (
   SELECT order_id, 
   	runner_id,
-  	CASE WHEN pickup_time = 'null' or pickup_time = '' THEN NULL 
-  	ELSE pickup_time::timestamp END AS pickup_time,
-    CASE WHEN distance = 'null' or distance = '' THEN NULL
-    ELSE TRIM(trailing 'km' FROM distance)::real END AS distance,
-    CASE WHEN duration = 'null' or duration = '' THEN NULL
-    ELSE TRIM(trailing 'minutes' FROM duration)::integer END AS duration,
-    CASE WHEN cancellation = 'null' or cancellation = '' THEN NULL
-    ELSE cancellation END AS cancellation
+  	CASE WHEN pickup_time = 'null' or pickup_time = '' THEN NULL ELSE pickup_time::timestamp END AS pickup_time,
+  	CASE WHEN distance = 'null' or distance = '' THEN NULL ELSE TRIM(trailing 'km' FROM distance)::real END AS distance,
+  	CASE WHEN duration = 'null' or duration = '' THEN NULL ELSE TRIM(trailing 'minutes' FROM duration)::integer END AS duration,
+  	CASE WHEN cancellation = 'null' or cancellation = '' THEN NULL ELSE cancellation END AS cancellation
   FROM pizza_runner.runner_orders
 ); 
 ```
@@ -55,8 +49,7 @@ DROP TABLE IF EXISTS pizza_recipes_temp;
 
 CREATE TEMP TABLE pizza_recipes_temp AS (
   SELECT pizza_id, 
-	CASE WHEN toppings = 'null' or toppings = '' THEN NULL
-  	ELSE STRING_TO_ARRAY(toppings, ',')::int[] END AS toppings
+	CASE WHEN toppings = 'null' or toppings = '' THEN NULL ELSE STRING_TO_ARRAY(toppings, ',')::int[] END AS toppings
   FROM pizza_runner.pizza_recipes
 ); 
 ```
