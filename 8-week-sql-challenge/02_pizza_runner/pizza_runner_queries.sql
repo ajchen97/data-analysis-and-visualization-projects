@@ -42,6 +42,7 @@ ON c.pizza_id = p.pizza_id
 GROUP BY 1,2 
 ORDER BY 1;
 
+
 -- 6. What was the maximum number of pizzas delivered in a single order?
 WITH pizzas_delivered AS (
   SELECT c.order_id, 
@@ -58,10 +59,10 @@ FROM pizzas_delivered;
 
 
 -- 7. For each customer, how many delivered pizzas had at least 1 change and how many had no changes?
-WITH changes AS (
+WITH either_changes AS (
   SELECT c.customer_id AS customer_id,
   	  c.pizza_id AS pizza_id, 
-      CASE WHEN c.exclusions IS NOT NULL or c.extras IS NOT NULL THEN 1
+      CASE WHEN c.exclusions IS NOT NULL OR c.extras IS NOT NULL THEN 1
           ELSE 0 END AS changes
   FROM customer_orders_temp c
   JOIN runner_orders_temp r
@@ -72,13 +73,41 @@ WITH changes AS (
 SELECT customer_id, 
 	COUNT(changes) FILTER (WHERE changes = 1) AS any_changes,
     COUNT(changes) FILTER (WHERE changes = 0) AS no_changes
-FROM changes
+FROM either_changes
 GROUP BY 1;
 
 
 -- 8. How many pizzas were delivered that had both exclusions and extras?
+WITH both_changes AS (
+  SELECT c.customer_id AS customer_id,
+  	  c.pizza_id AS pizza_id, 
+      CASE WHEN c.exclusions IS NOT NULL AND c.extras IS NOT NULL THEN 1 ELSE 0 END AS changes
+  FROM customer_orders_temp c
+  JOIN runner_orders_temp r
+  ON c.order_id = r.order_id
+      AND r.cancellation IS NULL
+  ORDER BY c.customer_id)
+
+SELECT COUNT(changes) FILTER (WHERE changes = 1) AS both_changes_pizzas
+FROM both_changes;
+
+
 -- 9. What was the total volume of pizzas ordered for each hour of the day?
+SELECT EXTRACT('hour' FROM order_time) AS hour_of_day,
+    COUNT(*) AS pizzas_ordered
+FROM customer_orders_temp
+GROUP BY 1
+ORDER BY 1;
+
+
 -- 10. What was the volume of orders for each day of the week?
+SELECT TO_CHAR(order_time, 'Day') AS day_of_week,
+    COUNT(*) AS pizzas_ordered
+FROM customer_orders_temp
+GROUP BY 1
+ORDER BY 2;
+
+
 
 -- B. Runner and Customer Experience
 -- 1. How many runners signed up for each 1 week period? (i.e. week starts 2021-01-01)
