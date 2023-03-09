@@ -9,12 +9,12 @@ Danny was sold on the idea, but he knew that pizza alone was not going to help h
 Danny started by recruiting “runners” to deliver fresh pizza from Pizza Runner Headquarters (otherwise known as Danny’s house) and also maxed out his credit card to pay freelance developers to build a mobile app to accept orders from customers.
   
 ## Datasets
-  - **runners:** shows the registration_date for each new runner
-  - **customer_orders:** captures customer pizza orders with 1 row for each individual pizza that is part of the order; the pizza_id relates to the type of pizza which was ordered whilst the exclusions are the ingredient_id values which should be removed from the pizza and the extras are the ingredient_id values which need to be added to the pizza
-  - **runner_orders:** captures the order_id, runner_id, cancellation; pickup_time is the timestamp at which the runner arrives at the Pizza Runner headquarters to pick up the freshly cooked pizzas; distance and duration fields are related to how far and long the runner had to travel to deliver the order to the respective customer
-  - **pizza_names:** the pizzas available
-  - **pizza_recipes:** each pizza_id has a standard set of toppings which are used as part of the pizza recipe
-  - **pizza_toppings:** contains all of the topping_name values with their corresponding topping_id value
+  - **`runners`:** shows the registration_date for each new runner
+  - **`customer_orders`:** captures customer pizza orders with 1 row for each individual pizza that is part of the order; the pizza_id relates to the type of pizza which was ordered whilst the exclusions are the ingredient_id values which should be removed from the pizza and the extras are the ingredient_id values which need to be added to the pizza
+  - **`runner_orders`:** captures the order_id, runner_id, cancellation; pickup_time is the timestamp at which the runner arrives at the Pizza Runner headquarters to pick up the freshly cooked pizzas; distance and duration fields are related to how far and long the runner had to travel to deliver the order to the respective customer
+  - **`pizza_names`:** the pizzas available
+  - **`pizza_recipes`:** each pizza_id has a standard set of toppings which are used as part of the pizza recipe
+  - **`pizza_toppings`:** contains all of the topping_name values with their corresponding topping_id value
 
 ## Entity Relationship Diagram  
 <p align="center"> <img src="https://user-images.githubusercontent.com/19737483/223602648-af46ce57-76ce-4754-bfd2-cf79829f840c.png" alt="Image">
