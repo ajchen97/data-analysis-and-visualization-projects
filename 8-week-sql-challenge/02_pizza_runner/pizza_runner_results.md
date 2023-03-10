@@ -90,9 +90,6 @@
 | 3         | 23.72 mins  |
 
 
-1	15.68 minutes
-3	10.47 minutes
-2	23.72 minutes
 
 **3. Is there any relationship between the number of pizzas and how long the order takes to prepare?**
 
