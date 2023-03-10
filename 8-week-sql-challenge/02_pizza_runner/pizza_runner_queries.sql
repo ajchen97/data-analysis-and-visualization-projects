@@ -101,10 +101,30 @@ ORDER BY 2;
 
 -- B. RUNNER AND CUSTOMER EXPERIENCE
 -- 1. How many runners signed up for each 1 week period? (i.e. week starts 2021-01-01)
+SELECT DATE_PART('week', registration_date+3) AS registration_week,
+	COUNT(runner_id) AS sign_ups
+FROM pizza_runner.runners
+GROUP BY 1
+ORDER BY 1;
 
 -- 2. What was the average time in minutes it took for each runner to arrive at the Pizza Runner HQ to pickup the order?
+WITH arrival_time AS (
+  SELECT r.runner_id AS runner_id, 
+  	  (EXTRACT('EPOCH' FROM r.pickup_time) - EXTRACT('EPOCH' FROM c.order_time))/60 AS arrival_time
+  FROM runner_orders_temp r
+  JOIN customer_orders_temp c
+  ON r.order_id = c.order_id
+  WHERE r.cancellation IS NULL)
+
+SELECT runner_id, 
+	CONCAT(ROUND(AVG(arrival_time)::numeric, 2), ' mins') AS avg_arrival
+FROM arrival_time
+GROUP BY 1
+ORDER BY 1;
 
 -- 3. Is there any relationship between the number of pizzas and how long the order takes to prepare?
+
+
 
 -- 4. What was the average distance travelled for each customer?
 
