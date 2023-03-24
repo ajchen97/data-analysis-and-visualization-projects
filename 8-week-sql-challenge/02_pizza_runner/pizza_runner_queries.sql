@@ -123,7 +123,21 @@ GROUP BY 1
 ORDER BY 1;
 
 -- 3. Is there any relationship between the number of pizzas and how long the order takes to prepare?
+WITH prep AS (
+  SELECT c.order_id AS order_id, 
+      COUNT(c.order_id) AS pizza_count,
+      (EXTRACT(EPOCH FROM r.pickup_time) - EXTRACT(EPOCH FROM c.order_time))/60 AS prep_time
+  FROM customer_orders_temp c
+  JOIN runner_orders_temp r
+  ON c.order_id = r.order_id
+      AND r.cancellation IS NULL
+  GROUP BY 1,3)
 
+SELECT pizza_count, 
+	CONCAT(ROUND(AVG(prep_time)::numeric, 2), ' mins') AS avg_prep
+FROM prep
+GROUP BY 1
+ORDER BY 1;
 
 
 -- 4. What was the average distance travelled for each customer?
