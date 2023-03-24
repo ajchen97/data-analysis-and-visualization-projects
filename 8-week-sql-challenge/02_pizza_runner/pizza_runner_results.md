@@ -89,22 +89,45 @@
 | 2         | 10.47 mins  |
 | 3         | 23.72 mins  |
 
-
-
 **3. Is there any relationship between the number of pizzas and how long the order takes to prepare?**
-
-
+| pizza_count | avg_prep   |
+| ----------- | ---------- |
+| 1           | 12.36 mins |
+| 2           | 18.38 mins |
+| 3           | 29.28 mins |
 
 **4. What was the average distance travelled for each customer?**
-
+| customer_id | avg_distance |
+| ----------- | ------------ |
+| 101         | 20.00 km     |
+| 102         | 16.73 km     |
+| 103         | 23.40 km     |
+| 104         | 10.00 km     |
+| 105         | 25.00 km     |
 
 **5. What was the difference between the longest and shortest delivery times for all orders?**
-
+| delivery_time_difference |
+| ------------------------ |
+| 30 mins                  |
 
 **6. What was the average speed for each runner for each delivery and do you notice any trend for these values?**
-
+| runner_id | order_id | avg_speed  |
+| --------- | -------- | ---------- |
+| 1         | 1        | 37.50 km/h |
+| 1         | 2        | 44.44 km/h |
+| 1         | 3        | 40.20 km/h |
+| 1         | 10       | 60.00 km/h |
+| 2         | 4        | 35.10 km/h |
+| 2         | 7        | 60.00 km/h |
+| 2         | 8        | 93.60 km/h |
+| 3         | 5        | 40.00 km/h |
 
 **7. What is the successful delivery percentage for each runner?**
+| runner_id | success_percent |
+| --------- | --------------- |
+| 1         | 100%            |
+| 2         | 75%             |
+| 3         | 50%             |
 
 
 ### C. Ingredient Optimisation
