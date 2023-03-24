@@ -41,7 +41,7 @@ ORDER BY 1;
 -- 6. What was the maximum number of pizzas delivered in a single order?
 WITH pizzas_delivered AS (
   SELECT c.order_id, 
-	COUNT(c.order_id) AS num_delivered
+      COUNT(c.order_id) AS num_delivered
   FROM customer_orders_temp c 
   JOIN runner_orders_temp r
   ON c.order_id = r.order_id
@@ -55,9 +55,8 @@ FROM pizzas_delivered;
 -- 7. For each customer, how many delivered pizzas had at least 1 change and how many had no changes?
 WITH either_changes AS (
   SELECT c.customer_id AS customer_id,
-  	  c.pizza_id AS pizza_id, 
-      CASE WHEN c.exclusions IS NOT NULL OR c.extras IS NOT NULL THEN 1
-          ELSE 0 END AS changes
+      c.pizza_id AS pizza_id, 
+      CASE WHEN c.exclusions IS NOT NULL OR c.extras IS NOT NULL THEN 1 ELSE 0 END AS changes
   FROM customer_orders_temp c
   JOIN runner_orders_temp r
   ON c.order_id = r.order_id
@@ -65,7 +64,7 @@ WITH either_changes AS (
   ORDER BY c.customer_id)
 
 SELECT customer_id, 
-	COUNT(changes) FILTER (WHERE changes = 1) AS any_changes,
+    COUNT(changes) FILTER (WHERE changes = 1) AS any_changes,
     COUNT(changes) FILTER (WHERE changes = 0) AS no_changes
 FROM either_changes
 GROUP BY 1;
@@ -73,7 +72,7 @@ GROUP BY 1;
 -- 8. How many pizzas were delivered that had both exclusions and extras?
 WITH both_changes AS (
   SELECT c.customer_id AS customer_id,
-  	  c.pizza_id AS pizza_id, 
+      c.pizza_id AS pizza_id, 
       CASE WHEN c.exclusions IS NOT NULL AND c.extras IS NOT NULL THEN 1 ELSE 0 END AS changes
   FROM customer_orders_temp c
   JOIN runner_orders_temp r
@@ -102,7 +101,7 @@ ORDER BY 2;
 -- B. RUNNER AND CUSTOMER EXPERIENCE
 -- 1. How many runners signed up for each 1 week period? (i.e. week starts 2021-01-01)
 SELECT DATE_PART('week', registration_date+3) AS registration_week,
-	COUNT(runner_id) AS sign_ups
+    COUNT(runner_id) AS sign_ups
 FROM pizza_runner.runners
 GROUP BY 1
 ORDER BY 1;
@@ -110,14 +109,14 @@ ORDER BY 1;
 -- 2. What was the average time in minutes it took for each runner to arrive at the Pizza Runner HQ to pickup the order?
 WITH arrival_time AS (
   SELECT r.runner_id AS runner_id, 
-  	  (EXTRACT('EPOCH' FROM r.pickup_time) - EXTRACT('EPOCH' FROM c.order_time))/60 AS arrival_time
+      (EXTRACT('EPOCH' FROM r.pickup_time) - EXTRACT('EPOCH' FROM c.order_time))/60 AS arrival_time
   FROM runner_orders_temp r
   JOIN customer_orders_temp c
   ON r.order_id = c.order_id
   WHERE r.cancellation IS NULL)
 
 SELECT runner_id, 
-	CONCAT(ROUND(AVG(arrival_time)::numeric, 2), ' mins') AS avg_arrival
+    CONCAT(ROUND(AVG(arrival_time)::numeric, 2), ' mins') AS avg_arrival
 FROM arrival_time
 GROUP BY 1
 ORDER BY 1;
@@ -134,20 +133,47 @@ WITH prep AS (
   GROUP BY 1,3)
 
 SELECT pizza_count, 
-	CONCAT(ROUND(AVG(prep_time)::numeric, 2), ' mins') AS avg_prep
+    CONCAT(ROUND(AVG(prep_time)::numeric, 2), ' mins') AS avg_prep
 FROM prep
 GROUP BY 1
 ORDER BY 1;
 
-
 -- 4. What was the average distance travelled for each customer?
+SELECT c.customer_id AS customer_id, 
+    CONCAT(ROUND(AVG(r.distance)::numeric, 2), ' km') AS avg_distance
+FROM customer_orders_temp c
+JOIN runner_orders_temp r
+ON c.order_id = r.order_id
+    AND r.cancellation IS NULL
+GROUP BY 1
+ORDER BY 1;
 
 -- 5. What was the difference between the longest and shortest delivery times for all orders?
+SELECT CONCAT(MAX(duration)-MIN(duration), ' mins') AS delivery_time_difference
+FROM runner_orders_temp
+WHERE cancellation IS NULL;
 
 -- 6. What was the average speed for each runner for each delivery and do you notice any trend for these values?
+SELECT runner_id, 
+    order_id, 
+    CONCAT(ROUND(AVG((distance)/(duration/60::numeric))::numeric, 2), ' km/h') AS avg_speed
+FROM runner_orders_temp
+WHERE cancellation IS NULL
+GROUP BY 1,2
+ORDER BY 1,2;
 
 -- 7. What is the successful delivery percentage for each runner?
+WITH orders AS
+(SELECT runner_id, 
+      COUNT(order_id)::numeric AS total_orders,
+      (COUNT(order_id) FILTER (WHERE cancellation IS NULL))::numeric AS successful_orders
+FROM runner_orders_temp
+GROUP BY 1)
 
+SELECT runner_id, 
+    CONCAT(ROUND((successful_orders/total_orders)*100), '%') AS success_percent
+FROM orders
+ORDER BY 1;
 
 
 -- C. Ingredient Optimisation
