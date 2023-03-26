@@ -200,9 +200,7 @@ WITH extras_expanded AS (
       UNNEST(extras) AS extra_id
   FROM customer_orders_temp),
 toppings_expanded AS (
-  SELECT r.pizza_id AS pizza_id, 
-      n.pizza_name AS pizza_name,
-      UNNEST(r.toppings) AS topping_id
+  SELECT DISTINCT UNNEST(r.toppings) AS topping_id
   FROM pizza_recipes_temp r
   JOIN pizza_runner.pizza_names n
   ON r.pizza_id = n.pizza_id),
@@ -223,8 +221,100 @@ WHERE e.extras_count = (
     FROM extras_count);
 
 -- 3. What was the most common exclusion?
+WITH exclusions_expanded AS (
+  SELECT exclusions,
+      UNNEST(exclusions) AS exclusion_id
+  FROM customer_orders_temp),
+toppings_expanded AS (
+  SELECT DISTINCT UNNEST(r.toppings) AS topping_id
+  FROM pizza_recipes_temp r
+  JOIN pizza_runner.pizza_names n
+  ON r.pizza_id = n.pizza_id),
+exclusions_count AS (
+  SELECT exclusion_id, 
+      COUNT(exclusion_id) AS exclusions_count
+  FROM exclusions_expanded 
+  GROUP BY 1)
 
+SELECT pt.topping_name AS most_common_exclusion
+FROM exclusions_count e
+JOIN toppings_expanded t
+ON e.exclusion_id = t.topping_id
+JOIN pizza_runner.pizza_toppings pt
+ON t.topping_id = pt.topping_id
+WHERE e.exclusions_count = (
+    SELECT MAX(exclusions_count) 
+    FROM exclusions_count);
+    
 -- 4. Generate an order item for each record in the customers_orders table in the format of one of the following: (Meat Lovers), (Meat Lovers - Exclude Beef), (Meat Lovers - Extra Bacon), (Meat Lovers - Exclude Cheese, Bacon - Extra Mushroom, Peppers)
+WITH toppings_expanded AS (
+  SELECT DISTINCT UNNEST(r.toppings) AS topping_id
+  FROM pizza_recipes_temp r
+  JOIN pizza_runner.pizza_names n
+  ON r.pizza_id = n.pizza_id),
+toppings_list AS (
+  SELECT t.topping_id AS topping_id, 
+      pt.topping_name AS topping_name,
+      CASE WHEN pt.topping_name IN ('Bacon', 'Beef', 'Chicken', 'Pepperoni', 'Salami') THEN 'meat'
+          ELSE 'non-meat' END AS topping_type
+  FROM toppings_expanded t
+  JOIN pizza_runner.pizza_toppings pt
+  ON t.topping_id = pt.topping_id),
+extras_expanded AS (
+  SELECT extras,
+      UNNEST(extras) AS extra_id
+  FROM customer_orders_temp),
+extra_names AS (
+  SELECT extras,
+      STRING_AGG(DISTINCT pt.topping_name, ', ') AS extra_names
+  FROM extras_expanded e
+  JOIN toppings_expanded t
+  ON e.extra_id = t.topping_id
+  JOIN pizza_runner.pizza_toppings pt
+  ON t.topping_id = pt.topping_id
+  GROUP BY 1),
+exclusions_expanded AS (
+  SELECT exclusions,
+      UNNEST(exclusions) AS exclusion_id
+  FROM customer_orders_temp),
+exclusion_names AS (
+  SELECT exclusions,
+      STRING_AGG(DISTINCT pt.topping_name, ', ') AS exclusion_names
+  FROM exclusions_expanded e
+  JOIN toppings_expanded t
+  ON e.exclusion_id = t.topping_id
+  JOIN pizza_runner.pizza_toppings pt
+  ON t.topping_id = pt.topping_id
+  GROUP BY 1),
+orders AS (
+  SELECT c.order_id AS order_id, 
+      c.customer_id AS customer_id,
+      c.pizza_id AS pizza_id,
+      CASE WHEN c.exclusions IS NOT NULL THEN exclusion_names END AS exclusions,
+      CASE WHEN c.extras IS NOT NULL THEN extra_names END AS extras,
+  	  CASE WHEN pizza_name = 'Meatlovers' THEN 'Meat Lovers'
+          WHEN pizza_name = 'Vegetarian' THEN 'Veggie Lovers' END AS order_name
+  FROM customer_orders_temp c
+  LEFT JOIN pizza_runner.pizza_names n
+  ON c.pizza_id = n.pizza_id
+  LEFT JOIN exclusion_names exc
+  ON exc.exclusions = c.exclusions
+  LEFT JOIN extra_names ext
+  ON ext.extras = c.extras),
+order_summary AS (
+  SELECT order_id,
+  	  customer_id,
+  	  pizza_id,
+  	  exclusions,
+  	  extras,
+      CASE WHEN exclusions IS NOT NULL AND extras IS NULL THEN CONCAT(order_name, ' - Exclude ', exclusions)
+          WHEN exclusions IS NULL AND extras IS NOT NULL THEN CONCAT(order_name, ' - Extra ', extras)
+          WHEN exclusions IS NOT NULL AND extras IS NOT NULL THEN CONCAT(order_name,' - Exclude ', exclusions, ' - Extra ', extras)
+  		  ELSE order_name END AS order_item
+  FROM orders)
+
+SELECT *
+FROM order_summary;
 
 -- 5. Generate an alphabetically ordered comma separated ingredient list for each pizza order from the customer_orders table and add a 2x in front of any relevant ingredients (For example: "Meat Lovers: 2xBacon, Beef, ... , Salami")
 
