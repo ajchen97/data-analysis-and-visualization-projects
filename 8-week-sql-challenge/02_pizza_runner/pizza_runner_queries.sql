@@ -177,7 +177,6 @@ ORDER BY 1;
 
 
 -- C. Ingredient Optimisation
-  
 -- 1. What are the standard ingredients for each pizza?
 WITH toppings_expanded AS (
   SELECT r.pizza_id AS pizza_id, 
@@ -300,21 +299,20 @@ orders AS (
   LEFT JOIN exclusion_names exc
   ON exc.exclusions = c.exclusions
   LEFT JOIN extra_names ext
-  ON ext.extras = c.extras),
-order_summary AS (
-  SELECT order_id,
-  	  customer_id,
-  	  pizza_id,
-  	  exclusions,
-  	  extras,
-      CASE WHEN exclusions IS NOT NULL AND extras IS NULL THEN CONCAT(order_name, ' - Exclude ', exclusions)
-          WHEN exclusions IS NULL AND extras IS NOT NULL THEN CONCAT(order_name, ' - Extra ', extras)
-          WHEN exclusions IS NOT NULL AND extras IS NOT NULL THEN CONCAT(order_name,' - Exclude ', exclusions, ' - Extra ', extras)
-  		  ELSE order_name END AS order_item
-  FROM orders)
-
-SELECT *
-FROM order_summary;
+  ON ext.extras = c.extras)
+  
+  
+SELECT order_id,
+    customer_id,
+    pizza_id,
+    exclusions,
+    extras,
+    CASE WHEN exclusions IS NOT NULL AND extras IS NULL THEN CONCAT(order_name, ' - Exclude ', exclusions)
+    	WHEN exclusions IS NULL AND extras IS NOT NULL THEN CONCAT(order_name, ' - Extra ', extras)
+    	WHEN exclusions IS NOT NULL AND extras IS NOT NULL THEN CONCAT(order_name,' - Exclude ', exclusions, ' - Extra ', extras)
+    	ELSE order_name END AS order_item
+FROM orders
+ORDER BY 1;
 
 -- 5. Generate an alphabetically ordered comma separated ingredient list for each pizza order from the customer_orders table and add a 2x in front of any relevant ingredients (For example: "Meat Lovers: 2xBacon, Beef, ... , Salami")
 
