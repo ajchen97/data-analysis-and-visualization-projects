@@ -163,12 +163,12 @@ GROUP BY 1,2
 ORDER BY 1,2;
 
 -- 7. What is the successful delivery percentage for each runner?
-WITH orders AS
-(SELECT runner_id, 
+WITH orders AS (
+  SELECT runner_id, 
       COUNT(order_id)::numeric AS total_orders,
       (COUNT(order_id) FILTER (WHERE cancellation IS NULL))::numeric AS successful_orders
-FROM runner_orders_temp
-GROUP BY 1)
+  FROM runner_orders_temp
+  GROUP BY 1)
 
 SELECT runner_id, 
     CONCAT(ROUND((successful_orders/total_orders)*100), '%') AS success_percent
@@ -177,17 +177,59 @@ ORDER BY 1;
 
 
 -- C. Ingredient Optimisation
+  
 -- 1. What are the standard ingredients for each pizza?
+WITH toppings_expanded AS (
+  SELECT r.pizza_id AS pizza_id, 
+      n.pizza_name AS pizza_name,
+      UNNEST(r.toppings) AS topping_id
+  FROM pizza_recipes_temp r
+  JOIN pizza_runner.pizza_names n
+  ON r.pizza_id = n.pizza_id)
+    
+SELECT t.pizza_name AS pizza_name, 
+    ARRAY_AGG(pt.topping_name) AS ingredients
+FROM toppings_expanded t
+JOIN pizza_runner.pizza_toppings pt
+ON t.topping_id = pt.topping_id
+GROUP BY 1;
+
 -- 2. What was the most commonly added extra?
+WITH extras_expanded AS (
+  SELECT extras,
+      UNNEST(extras) AS extra_id
+  FROM customer_orders_temp),
+toppings_expanded AS (
+  SELECT r.pizza_id AS pizza_id, 
+      n.pizza_name AS pizza_name,
+      UNNEST(r.toppings) AS topping_id
+  FROM pizza_recipes_temp r
+  JOIN pizza_runner.pizza_names n
+  ON r.pizza_id = n.pizza_id),
+extras_count AS (
+  SELECT extra_id, 
+      COUNT(extra_id) AS extras_count
+  FROM extras_expanded 
+  GROUP BY 1)
+
+SELECT pt.topping_name AS most_common_extra
+FROM extras_count e
+JOIN toppings_expanded t
+ON e.extra_id = t.topping_id
+JOIN pizza_runner.pizza_toppings pt
+ON t.topping_id = pt.topping_id
+WHERE e.extras_count = (
+    SELECT MAX(extras_count) 
+    FROM extras_count);
+
 -- 3. What was the most common exclusion?
-/** 4. Generate an order item for each record in the customers_orders table in the format of one of the following:
-      - Meat Lovers
-      - Meat Lovers - Exclude Beef
-      - Meat Lovers - Extra Bacon
-      - Meat Lovers - Exclude Cheese, Bacon - Extra Mushroom, Peppers **/
-/** 5. Generate an alphabetically ordered comma separated ingredient list for each pizza order from the customer_orders table and add a 2x in front of any relevant ingredients
-      - For example: "Meat Lovers: 2xBacon, Beef, ... , Salami" **/
+
+-- 4. Generate an order item for each record in the customers_orders table in the format of one of the following: (Meat Lovers), (Meat Lovers - Exclude Beef), (Meat Lovers - Extra Bacon), (Meat Lovers - Exclude Cheese, Bacon - Extra Mushroom, Peppers)
+
+-- 5. Generate an alphabetically ordered comma separated ingredient list for each pizza order from the customer_orders table and add a 2x in front of any relevant ingredients (For example: "Meat Lovers: 2xBacon, Beef, ... , Salami")
+
 -- 6. What is the total quantity of each ingredient used in all delivered pizzas sorted by most frequent first?
+
 
 -- D. Pricing and Ratings
 -- 1. If a Meat Lovers pizza costs $12 and Vegetarian costs $10 and there were no charges for changes - how much money has Pizza Runner made so far if there are no delivery fees?
