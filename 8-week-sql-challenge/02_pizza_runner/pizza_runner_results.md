@@ -210,20 +210,29 @@ FROM customer_orders_temp;
 | --------------------- |
 | Cheese                |
 
-**4. Generate an order item for each record in the customers_orders table in the format of one of the following: (Meat Lovers), (Meat Lovers - Exclude Beef), (Meat Lovers - Extra Bacon), (Meat Lovers - Exclude Cheese, Bacon - Extra Mushroom, Peppers)**
+**4. Generate an order item for each record in the customers_orders table in the format of one of the following:**
+- Meat Lovers
+- Meat Lovers - Exclude Beef
+- Meat Lovers - Extra Bacon
+- Meat Lovers - Exclude Cheese, Bacon - Extra Mushroom, Peppers)
+
 ```sql 
 
 ```
+
+
 
 **5. Generate an alphabetically ordered comma separated ingredient list for each pizza order from the customer_orders table and add a 2x in front of any relevant ingredients (For example: "Meat Lovers: 2xBacon, Beef, ... , Salami")**
 ```sql 
 
 ```
 
+
 **6. What is the total quantity of each ingredient used in all delivered pizzas sorted by most frequent first?**
 ```sql 
 
 ```
+
 
 
 ### D. Pricing and Ratings
@@ -232,15 +241,18 @@ FROM customer_orders_temp;
 
 ```
 
+
 **2. What if there was an additional $1 charge for any pizza extras? Add cheese is $1 extra**
 ```sql 
 
 ```
 
+
 **3. The Pizza Runner team now wants to add an additional ratings system that allows customers to rate their runner, how would you design an additional table for this new dataset - generate a schema for this new table and insert your own data for ratings for each successful customer order between 1 to 5.**
 ```sql 
 
 ```
+
 
 **4. Using your newly generated table - can you join all of the information together to form a table which has the following information for successful deliveries?**
 - customer_id
@@ -253,9 +265,11 @@ FROM customer_orders_temp;
 - Delivery duration
 - Average speed
 - Total number of pizzas
+
 ```sql 
 
 ```
+
 
 **5. If a Meat Lovers pizza was $12 and Vegetarian $10 fixed prices with no cost for extras and each runner is paid $0.30 per kilometre traveled - how much money does Pizza Runner have left over after these deliveries?**
 ```sql 
@@ -263,9 +277,12 @@ FROM customer_orders_temp;
 ```
 
 
+
+
 ### E. Bonus Questions
 **1. If Danny wants to expand his range of pizzas - how would this impact the existing data design? Write an INSERT statement to demonstrate what would happen if a new Supreme pizza with all the toppings was added to the Pizza Runner menu?**
 ```sql 
 
 ```
+
 
