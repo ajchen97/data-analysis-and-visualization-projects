@@ -2,16 +2,27 @@
 
 ### A. Pizza Metrics
 **1. How many pizzas were ordered?**
+```sql 
+SELECT COUNT(*) AS total_pizzas
+FROM customer_orders_temp;
+```
 | total_pizzas |
 | ------------ |
 | 14           |
 
 **2. How many unique customer orders were made?**
+```sql 
+
+```
 | unique_orders |
 | ------------- |
 | 10            |
 
 **3. How many successful orders were delivered by each runner?**
+```sql 
+
+```
+
 | runner_id | successful_orders |
 | --------- | ----------------- |
 | 1         | 4                 |
@@ -19,12 +30,19 @@
 | 3         | 1                 |
 
 **4. How many of each type of pizza was delivered?**
+```sql 
+
+```
+
 | pizza_name | num_delivered |
 | ---------- | ------------- |
 | Vegetarian | 3             |
 | Meatlovers | 9             |
 
 **5. How many Vegetarian and Meatlovers were ordered by each customer?**
+```sql 
+
+```
 | customer_id | pizza_name | num_ordered |
 | ----------- | ---------- | ----------- |
 | 101         | Meatlovers | 2           |
@@ -37,11 +55,17 @@
 | 105         | Vegetarian | 1           |
 
 **6. What was the maximum number of pizzas delivered in a single order?**
+```sql 
+
+```
 | max_delivered |
 | ------------- |
 | 3             |
 
 **7. For each customer, how many delivered pizzas had at least 1 change and how many had no changes?**
+```sql 
+
+```
 | customer_id | any_changes | no_changes |
 | ----------- | ----------- | ---------- |
 | 101         | 0           | 2          |
@@ -51,11 +75,17 @@
 | 105         | 1           | 0          |
 
 **8. How many pizzas were delivered that had both exclusions and extras?**
+```sql 
+
+```
 | both_changes_pizzas |
 | ------------------- |
 | 3                   |
 
 **9. What was the total volume of pizzas ordered for each hour of the day?**
+```sql 
+
+```
 | hour_of_day | pizzas_ordered |
 | ----------- | -------------- |
 | 11          | 1              |
@@ -66,6 +96,9 @@
 | 23          | 3              |
 
 **10. What was the volume of orders for each day of the week?**
+```sql 
+
+```
 | day_of_week | pizzas_ordered |
 | ----------- | -------------- |
 | Friday      | 1              |
@@ -76,6 +109,9 @@
 
 ### B. Runner and Customer Experience
 **1. How many runners signed up for each 1 week period? (i.e. week starts 2021-01-01)**
+```sql 
+
+```
 | registration_week | sign_ups |
 | ----------------- | -------- |
 | 1                 | 2        |
@@ -83,6 +119,9 @@
 | 3                 | 1        |
 
 **2. What was the average time in minutes it took for each runner to arrive at the Pizza Runner HQ to pickup the order?**
+```sql 
+
+```
 | runner_id | avg_arrival |
 | --------- | ----------- |
 | 1         | 15.68 mins  |
@@ -90,6 +129,9 @@
 | 3         | 23.72 mins  |
 
 **3. Is there any relationship between the number of pizzas and how long the order takes to prepare?**
+```sql 
+
+```
 | pizza_count | avg_prep   |
 | ----------- | ---------- |
 | 1           | 12.36 mins |
@@ -97,6 +139,9 @@
 | 3           | 29.28 mins |
 
 **4. What was the average distance travelled for each customer?**
+```sql 
+
+```
 | customer_id | avg_distance |
 | ----------- | ------------ |
 | 101         | 20.00 km     |
@@ -106,11 +151,17 @@
 | 105         | 25.00 km     |
 
 **5. What was the difference between the longest and shortest delivery times for all orders?**
+```sql 
+
+```
 | delivery_time_difference |
 | ------------------------ |
 | 30 mins                  |
 
 **6. What was the average speed for each runner for each delivery and do you notice any trend for these values?**
+```sql 
+
+```
 | runner_id | order_id | avg_speed  |
 | --------- | -------- | ---------- |
 | 1         | 1        | 37.50 km/h |
@@ -123,6 +174,9 @@
 | 3         | 5        | 40.00 km/h |
 
 **7. What is the successful delivery percentage for each runner?**
+```sql 
+
+```
 | runner_id | success_percent |
 | --------- | --------------- |
 | 1         | 100%            |
@@ -132,31 +186,63 @@
 
 ### C. Ingredient Optimisation
 **1. What are the standard ingredients for each pizza?**
+```sql 
+
+```
 | pizza_name | ingredients                                                    |
 | ---------- | -------------------------------------------------------------- |
 | Meatlovers | Bacon,BBQ Sauce,Beef,Cheese,Chicken,Mushrooms,Pepperoni,Salami |
 | Vegetarian | Cheese,Mushrooms,Onions,Peppers,Tomatoes,Tomato Sauce          |
 
 **2. What was the most commonly added extra?**
+```sql 
+
+```
 | most_common_extra |
 | ----------------- |
 | Bacon             |
 
 **3. What was the most common exclusion?**
+```sql 
+
+```
+| most_common_exclusion |
+| --------------------- |
+| Cheese                |
 
 **4. Generate an order item for each record in the customers_orders table in the format of one of the following: (Meat Lovers), (Meat Lovers - Exclude Beef), (Meat Lovers - Extra Bacon), (Meat Lovers - Exclude Cheese, Bacon - Extra Mushroom, Peppers)**
+```sql 
 
-**5. Generate an alphabetically ordered comma separated ingredient list for each pizza order from the customer_orders table and add a 2x in front of any relevant ingredients (For example: "Meat Lovers: 2xBacon, Beef, ... , Salami") **
+```
+
+**5. Generate an alphabetically ordered comma separated ingredient list for each pizza order from the customer_orders table and add a 2x in front of any relevant ingredients (For example: "Meat Lovers: 2xBacon, Beef, ... , Salami")**
+```sql 
+
+```
 
 **6. What is the total quantity of each ingredient used in all delivered pizzas sorted by most frequent first?**
+```sql 
+
+```
+
 
 ### D. Pricing and Ratings
 **1. If a Meat Lovers pizza costs $12 and Vegetarian costs $10 and there were no charges for changes - how much money has Pizza Runner made so far if there are no delivery fees?**
+```sql 
 
-2. What if there was an additional $1 charge for any pizza extras?
-- Add cheese is $1 extra
-3. The Pizza Runner team now wants to add an additional ratings system that allows customers to rate their runner, how would you design an additional table for this new dataset - generate a schema for this new table and insert your own data for ratings for each successful customer order between 1 to 5.
-4. Using your newly generated table - can you join all of the information together to form a table which has the following information for successful deliveries?
+```
+
+**2. What if there was an additional $1 charge for any pizza extras? Add cheese is $1 extra**
+```sql 
+
+```
+
+**3. The Pizza Runner team now wants to add an additional ratings system that allows customers to rate their runner, how would you design an additional table for this new dataset - generate a schema for this new table and insert your own data for ratings for each successful customer order between 1 to 5.**
+```sql 
+
+```
+
+**4. Using your newly generated table - can you join all of the information together to form a table which has the following information for successful deliveries?**
 - customer_id
 - order_id
 - runner_id
@@ -167,7 +253,19 @@
 - Delivery duration
 - Average speed
 - Total number of pizzas
-5. If a Meat Lovers pizza was $12 and Vegetarian $10 fixed prices with no cost for extras and each runner is paid $0.30 per kilometre traveled - how much money does Pizza Runner have left over after these deliveries?
+```sql 
+
+```
+
+**5. If a Meat Lovers pizza was $12 and Vegetarian $10 fixed prices with no cost for extras and each runner is paid $0.30 per kilometre traveled - how much money does Pizza Runner have left over after these deliveries?**
+```sql 
+
+```
+
 
 ### E. Bonus Questions
 **1. If Danny wants to expand his range of pizzas - how would this impact the existing data design? Write an INSERT statement to demonstrate what would happen if a new Supreme pizza with all the toppings was added to the Pizza Runner menu?**
+```sql 
+
+```
+
