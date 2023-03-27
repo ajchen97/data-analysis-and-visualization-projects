@@ -480,10 +480,27 @@ ORDER BY 1;
 | 10       | 104         | 1        |                      |                | Meat Lovers                                                      |
 
 **5. Generate an alphabetically ordered comma separated ingredient list for each pizza order from the customer_orders table and add a 2x in front of any relevant ingredients (For example: "Meat Lovers: 2xBacon, Beef, ... , Salami")**
+
+
 ```sql 
-
+IN PROGRESS 
 ```
-
+| order_id | customer_id | pizza_id | order_list                                                                                                                |
+| -------- | ----------- | -------- | ------------------------------------------------------------------------------------------------------------------------- |
+| 1        | 101         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Beef, Cheese, Chicken, Mushrooms, Pepperoni, Salami                                      |
+| 2        | 101         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Beef, Cheese, Chicken, Mushrooms, Pepperoni, Salami                                      |
+| 3        | 102         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Beef, Cheese, Chicken, Mushrooms, Pepperoni, Salami                                      |
+| 3        | 102         | 2        | Meat Lovers: Cheese, Mushrooms, Onions, Peppers, Tomato Sauce, Tomatoes                                                   |
+| 4        | 103         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Beef, Cheese, Cheese, Chicken, Mushrooms, Pepperoni, Salami                              |
+| 4        | 103         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Beef, Cheese, Cheese, Chicken, Mushrooms, Pepperoni, Salami                              |
+| 4        | 103         | 2        | Meat Lovers: Cheese, Cheese, Mushrooms, Onions, Peppers, Tomato Sauce, Tomatoes                                           |
+| 5        | 104         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Bacon, Beef, Cheese, Chicken, Mushrooms, Pepperoni, Salami                               |
+| 6        | 101         | 2        | Meat Lovers: Cheese, Mushrooms, Onions, Peppers, Tomato Sauce, Tomatoes                                                   |
+| 7        | 105         | 2        | Meat Lovers: Bacon, Cheese, Mushrooms, Onions, Peppers, Tomato Sauce, Tomatoes                                            |
+| 8        | 102         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Beef, Cheese, Chicken, Mushrooms, Pepperoni, Salami                                      |
+| 9        | 103         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Bacon, Beef, Cheese, Cheese, Chicken, Chicken, Mushrooms, Pepperoni, Salami              |
+| 10       | 104         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Beef, Cheese, Chicken, Mushrooms, Pepperoni, Salami                                      |
+| 10       | 104         | 1        | Veggie Lovers: BBQ Sauce, BBQ Sauce, Bacon, Bacon, Beef, Cheese, Cheese, Chicken, Mushrooms, Mushrooms, Pepperoni, Salami |
 
 **6. What is the total quantity of each ingredient used in all delivered pizzas sorted by most frequent first?**
 ```sql 
