@@ -332,7 +332,7 @@ orders AS (
       c.customer_id,
       c.pizza_id,
       ARRAY_CAT(ARRAY_CAT(c.exclusions, c.extras), r.toppings) AS all_toppings,
-  	  ROW_NUMBER() OVER (ORDER BY c.order_id) AS row_num
+      ROW_NUMBER() OVER (ORDER BY c.order_id) AS row_num
   FROM customer_orders_temp c
   JOIN pizza_recipes_temp r
   ON c.pizza_id = r.pizza_id),
