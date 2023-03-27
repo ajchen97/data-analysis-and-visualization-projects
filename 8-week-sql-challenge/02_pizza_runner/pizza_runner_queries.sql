@@ -301,7 +301,6 @@ orders AS (
   LEFT JOIN extra_names ext
   ON ext.extras = c.extras)
   
-  
 SELECT order_id,
     customer_id,
     pizza_id,
@@ -315,6 +314,56 @@ FROM orders
 ORDER BY 1;
 
 -- 5. Generate an alphabetically ordered comma separated ingredient list for each pizza order from the customer_orders table and add a 2x in front of any relevant ingredients (For example: "Meat Lovers: 2xBacon, Beef, ... , Salami")
+WITH toppings_expanded AS (
+  SELECT DISTINCT UNNEST(r.toppings) AS topping_id
+  FROM pizza_recipes_temp r
+  JOIN pizza_runner.pizza_names n
+  ON r.pizza_id = n.pizza_id),
+toppings_list AS (
+  SELECT DISTINCT t.topping_id AS topping_id, 
+      pt.topping_name AS topping_name,
+      CASE WHEN pt.topping_name IN ('Bacon', 'Beef', 'Chicken', 'Pepperoni', 'Salami') THEN 'meat'
+          ELSE 'non-meat' END AS topping_type
+  FROM toppings_expanded t
+  JOIN pizza_runner.pizza_toppings pt
+  ON t.topping_id = pt.topping_id),
+orders AS (
+  SELECT c.order_id,
+      c.customer_id,
+      c.pizza_id,
+      ARRAY_CAT(ARRAY_CAT(c.exclusions, c.extras), r.toppings) AS all_toppings,
+  	  ROW_NUMBER() OVER (ORDER BY c.order_id) AS row_num
+  FROM customer_orders_temp c
+  JOIN pizza_recipes_temp r
+  ON c.pizza_id = r.pizza_id),
+order_toppings_expanded as (
+  SELECT *, 
+      UNNEST(all_toppings) AS topping_id
+  FROM orders),
+toppings_count AS (
+  SELECT o.row_num, 
+      o.topping_id, 
+      CASE WHEN COUNT(t.topping_name) > 1 THEN CONCAT(COUNT(t.topping_name), 'x', t.topping_name) 
+  		  ELSE t.topping_name END AS topping_count
+  FROM order_toppings_expanded o
+  JOIN toppings_list t
+  ON t.topping_id = o.topping_id
+  GROUP BY 1,2, t.topping_name),
+ingredients_list AS (
+  SELECT o.order_id,
+      o.customer_id, 
+      o.pizza_id, 
+      o.row_num, 
+      STRING_AGG(t.topping_name, ', ' ORDER BY t.topping_name) AS ingredients_list
+  FROM order_toppings_expanded o
+  JOIN toppings_list t
+  ON t.topping_id = o.topping_id
+  GROUP BY 1,2,3,4) 
+
+SELECT order_id, customer_id, pizza_id, 
+	CASE WHEN pizza_id = 2 THEN concat('Meat Lovers: ', ingredients_list) ELSE concat('Veggie Lovers: ', ingredients_list) END AS order_list
+FROM ingredients_list
+
 
 -- 6. What is the total quantity of each ingredient used in all delivered pizzas sorted by most frequent first?
 
