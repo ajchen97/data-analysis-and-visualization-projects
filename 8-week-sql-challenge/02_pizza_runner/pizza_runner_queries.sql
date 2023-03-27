@@ -372,6 +372,39 @@ FROM ingredients_list;
 
 
 -- 6. What is the total quantity of each ingredient used in all delivered pizzas sorted by most frequent first?
+WITH toppings_expanded AS (
+  SELECT DISTINCT UNNEST(r.toppings) AS topping_id
+  FROM pizza_recipes_temp r
+  JOIN pizza_runner.pizza_names n
+  ON r.pizza_id = n.pizza_id),
+toppings_list AS (
+  SELECT DISTINCT t.topping_id AS topping_id, 
+      pt.topping_name AS topping_name,
+      CASE WHEN pt.topping_name IN ('Bacon', 'Beef', 'Chicken', 'Pepperoni', 'Salami') THEN 'meat'
+          ELSE 'non-meat' END AS topping_type
+  FROM toppings_expanded t
+  JOIN pizza_runner.pizza_toppings pt
+  ON t.topping_id = pt.topping_id),
+orders AS (
+  SELECT c.order_id,
+      c.customer_id,
+      c.pizza_id,
+      ARRAY_CAT(ARRAY_CAT(c.exclusions, c.extras), r.toppings) AS all_toppings,
+      ROW_NUMBER() OVER (ORDER BY c.order_id) AS row_num
+  FROM customer_orders_temp c
+  JOIN pizza_recipes_temp r
+  ON c.pizza_id = r.pizza_id),
+order_toppings_expanded as (
+  SELECT UNNEST(all_toppings) AS topping_id
+  FROM orders)
+
+SELECT pt.topping_name AS topping_name,
+    COUNT(o.topping_id) AS quantity_used
+FROM order_toppings_expanded o
+JOIN pizza_runner.pizza_toppings pt
+ON o.topping_id = pt.topping_id
+GROUP BY 1
+ORDER BY 2 DESC;
 
 
 -- D. Pricing and Ratings
