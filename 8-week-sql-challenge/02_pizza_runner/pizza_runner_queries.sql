@@ -291,7 +291,7 @@ orders AS (
       c.pizza_id AS pizza_id,
       CASE WHEN c.exclusions IS NOT NULL THEN exclusion_names END AS exclusions,
       CASE WHEN c.extras IS NOT NULL THEN extra_names END AS extras,
-  	  CASE WHEN pizza_name = 'Meatlovers' THEN 'Meat Lovers'
+      CASE WHEN pizza_name = 'Meatlovers' THEN 'Meat Lovers'
           WHEN pizza_name = 'Vegetarian' THEN 'Veggie Lovers' END AS order_name
   FROM customer_orders_temp c
   LEFT JOIN pizza_runner.pizza_names n
@@ -343,8 +343,8 @@ order_toppings_expanded as (
 toppings_count AS (
   SELECT o.row_num, 
       o.topping_id, 
-      CASE WHEN COUNT(t.topping_name) > 1 THEN CONCAT(COUNT(t.topping_name), 'x', t.topping_name) 
-  		  ELSE t.topping_name END AS topping_count_name
+      CASE WHEN COUNT(t.topping_name) > 1 THEN CONCAT(COUNT(t.topping_name), 'x', t.topping_name)
+          ELSE t.topping_name END AS topping_count_name
   FROM order_toppings_expanded o
   JOIN toppings_list t
   ON t.topping_id = o.topping_id
