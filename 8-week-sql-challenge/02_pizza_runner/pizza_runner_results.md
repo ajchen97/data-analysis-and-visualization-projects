@@ -483,24 +483,78 @@ ORDER BY 1;
 
 
 ```sql 
-IN PROGRESS 
+WITH toppings_expanded AS (
+  SELECT DISTINCT UNNEST(r.toppings) AS topping_id
+  FROM pizza_recipes_temp r
+  JOIN pizza_runner.pizza_names n
+  ON r.pizza_id = n.pizza_id),
+toppings_list AS (
+  SELECT DISTINCT t.topping_id AS topping_id, 
+      pt.topping_name AS topping_name,
+      CASE WHEN pt.topping_name IN ('Bacon', 'Beef', 'Chicken', 'Pepperoni', 'Salami') THEN 'meat'
+          ELSE 'non-meat' END AS topping_type
+  FROM toppings_expanded t
+  JOIN pizza_runner.pizza_toppings pt
+  ON t.topping_id = pt.topping_id),
+orders AS (
+  SELECT c.order_id,
+      c.customer_id,
+      c.pizza_id,
+      ARRAY_CAT(ARRAY_CAT(c.exclusions, c.extras), r.toppings) AS all_toppings,
+  	  ROW_NUMBER() OVER (ORDER BY c.order_id) AS row_num
+  FROM customer_orders_temp c
+  JOIN pizza_recipes_temp r
+  ON c.pizza_id = r.pizza_id),
+order_toppings_expanded as (
+  SELECT *, 
+      UNNEST(all_toppings) AS topping_id
+  FROM orders),
+toppings_count AS (
+  SELECT o.row_num, 
+      o.topping_id, 
+      CASE WHEN COUNT(t.topping_name) > 1 THEN CONCAT(COUNT(t.topping_name), 'x', t.topping_name) 
+  		  ELSE t.topping_name END AS topping_count_name
+  FROM order_toppings_expanded o
+  JOIN toppings_list t
+  ON t.topping_id = o.topping_id
+  GROUP BY 1,2, t.topping_name),
+ingredients_list AS (
+  SELECT o.order_id,
+      o.customer_id, 
+      o.pizza_id, 
+      o.row_num, 
+      STRING_AGG(DISTINCT tc.topping_count_name, ', ' ORDER BY tc.topping_count_name) AS ingredients_list
+  FROM order_toppings_expanded o
+  JOIN toppings_list t
+  ON t.topping_id = o.topping_id
+  JOIN toppings_count tc
+  ON o.topping_id = tc.topping_id
+      AND o.row_num = tc.row_num
+GROUP BY 1,2,3,4) 
+
+SELECT order_id, 
+    customer_id, 
+    pizza_id, 
+    CASE WHEN pizza_id = 2 THEN concat('Meat Lovers: ', ingredients_list) 
+        ELSE concat('Veggie Lovers: ', ingredients_list) END AS order_list
+FROM ingredients_list;
 ```
-| order_id | customer_id | pizza_id | order_list                                                                                                                |
-| -------- | ----------- | -------- | ------------------------------------------------------------------------------------------------------------------------- |
-| 1        | 101         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Beef, Cheese, Chicken, Mushrooms, Pepperoni, Salami                                      |
-| 2        | 101         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Beef, Cheese, Chicken, Mushrooms, Pepperoni, Salami                                      |
-| 3        | 102         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Beef, Cheese, Chicken, Mushrooms, Pepperoni, Salami                                      |
-| 3        | 102         | 2        | Meat Lovers: Cheese, Mushrooms, Onions, Peppers, Tomato Sauce, Tomatoes                                                   |
-| 4        | 103         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Beef, Cheese, Cheese, Chicken, Mushrooms, Pepperoni, Salami                              |
-| 4        | 103         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Beef, Cheese, Cheese, Chicken, Mushrooms, Pepperoni, Salami                              |
-| 4        | 103         | 2        | Meat Lovers: Cheese, Cheese, Mushrooms, Onions, Peppers, Tomato Sauce, Tomatoes                                           |
-| 5        | 104         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Bacon, Beef, Cheese, Chicken, Mushrooms, Pepperoni, Salami                               |
-| 6        | 101         | 2        | Meat Lovers: Cheese, Mushrooms, Onions, Peppers, Tomato Sauce, Tomatoes                                                   |
-| 7        | 105         | 2        | Meat Lovers: Bacon, Cheese, Mushrooms, Onions, Peppers, Tomato Sauce, Tomatoes                                            |
-| 8        | 102         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Beef, Cheese, Chicken, Mushrooms, Pepperoni, Salami                                      |
-| 9        | 103         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Bacon, Beef, Cheese, Cheese, Chicken, Chicken, Mushrooms, Pepperoni, Salami              |
-| 10       | 104         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Beef, Cheese, Chicken, Mushrooms, Pepperoni, Salami                                      |
-| 10       | 104         | 1        | Veggie Lovers: BBQ Sauce, BBQ Sauce, Bacon, Bacon, Beef, Cheese, Cheese, Chicken, Mushrooms, Mushrooms, Pepperoni, Salami |
+| order_id | customer_id | pizza_id | order_list                                                                                   |
+| -------- | ----------- | -------- | -------------------------------------------------------------------------------------------- |
+| 1        | 101         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Beef, Cheese, Chicken, Mushrooms, Pepperoni, Salami         |
+| 2        | 101         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Beef, Cheese, Chicken, Mushrooms, Pepperoni, Salami         |
+| 3        | 102         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Beef, Cheese, Chicken, Mushrooms, Pepperoni, Salami         |
+| 3        | 102         | 2        | Meat Lovers: Cheese, Mushrooms, Onions, Peppers, Tomato Sauce, Tomatoes                      |
+| 4        | 103         | 1        | Veggie Lovers: 2xCheese, BBQ Sauce, Bacon, Beef, Chicken, Mushrooms, Pepperoni, Salami       |
+| 4        | 103         | 1        | Veggie Lovers: 2xCheese, BBQ Sauce, Bacon, Beef, Chicken, Mushrooms, Pepperoni, Salami       |
+| 4        | 103         | 2        | Meat Lovers: 2xCheese, Mushrooms, Onions, Peppers, Tomato Sauce, Tomatoes                    |
+| 5        | 104         | 1        | Veggie Lovers: 2xBacon, BBQ Sauce, Beef, Cheese, Chicken, Mushrooms, Pepperoni, Salami       |
+| 6        | 101         | 2        | Meat Lovers: Cheese, Mushrooms, Onions, Peppers, Tomato Sauce, Tomatoes                      |
+| 7        | 105         | 2        | Meat Lovers: Bacon, Cheese, Mushrooms, Onions, Peppers, Tomato Sauce, Tomatoes               |
+| 8        | 102         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Beef, Cheese, Chicken, Mushrooms, Pepperoni, Salami         |
+| 9        | 103         | 1        | Veggie Lovers: 2xBacon, 2xCheese, 2xChicken, BBQ Sauce, Beef, Mushrooms, Pepperoni, Salami   |
+| 10       | 104         | 1        | Veggie Lovers: BBQ Sauce, Bacon, Beef, Cheese, Chicken, Mushrooms, Pepperoni, Salami         |
+| 10       | 104         | 1        | Veggie Lovers: 2xBBQ Sauce, 2xBacon, 2xCheese, 2xMushrooms, Beef, Chicken, Pepperoni, Salami |
 
 **6. What is the total quantity of each ingredient used in all delivered pizzas sorted by most frequent first?**
 ```sql 
