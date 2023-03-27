@@ -343,8 +343,9 @@ order_toppings_expanded as (
 toppings_count AS (
   SELECT o.row_num, 
       o.topping_id, 
+      COUNT(t.topping_name) AS topping_count,
       CASE WHEN COUNT(t.topping_name) > 1 THEN CONCAT(COUNT(t.topping_name), 'x', t.topping_name) 
-  		  ELSE t.topping_name END AS topping_count
+  		  ELSE t.topping_name END AS topping_count_name
   FROM order_toppings_expanded o
   JOIN toppings_list t
   ON t.topping_id = o.topping_id
@@ -354,15 +355,18 @@ ingredients_list AS (
       o.customer_id, 
       o.pizza_id, 
       o.row_num, 
-      STRING_AGG(t.topping_name, ', ' ORDER BY t.topping_name) AS ingredients_list
+      STRING_AGG(DISTINCT tc.topping_count_name, ', ' ORDER BY tc.topping_count_name) AS ingredients_list
   FROM order_toppings_expanded o
   JOIN toppings_list t
   ON t.topping_id = o.topping_id
-  GROUP BY 1,2,3,4) 
+  JOIN toppings_count tc
+  ON o.topping_id = tc.topping_id
+      AND o.row_num = tc.row_num
+GROUP BY 1,2,3,4) 
 
 SELECT order_id, customer_id, pizza_id, 
 	CASE WHEN pizza_id = 2 THEN concat('Meat Lovers: ', ingredients_list) ELSE concat('Veggie Lovers: ', ingredients_list) END AS order_list
-FROM ingredients_list
+FROM ingredients_list;
 
 
 -- 6. What is the total quantity of each ingredient used in all delivered pizzas sorted by most frequent first?
