@@ -343,7 +343,6 @@ order_toppings_expanded as (
 toppings_count AS (
   SELECT o.row_num, 
       o.topping_id, 
-      COUNT(t.topping_name) AS topping_count,
       CASE WHEN COUNT(t.topping_name) > 1 THEN CONCAT(COUNT(t.topping_name), 'x', t.topping_name) 
   		  ELSE t.topping_name END AS topping_count_name
   FROM order_toppings_expanded o
@@ -364,8 +363,11 @@ ingredients_list AS (
       AND o.row_num = tc.row_num
 GROUP BY 1,2,3,4) 
 
-SELECT order_id, customer_id, pizza_id, 
-	CASE WHEN pizza_id = 2 THEN concat('Meat Lovers: ', ingredients_list) ELSE concat('Veggie Lovers: ', ingredients_list) END AS order_list
+SELECT order_id, 
+    customer_id, 
+    pizza_id, 
+    CASE WHEN pizza_id = 2 THEN concat('Meat Lovers: ', ingredients_list) 
+        ELSE concat('Veggie Lovers: ', ingredients_list) END AS order_list
 FROM ingredients_list;
 
 
