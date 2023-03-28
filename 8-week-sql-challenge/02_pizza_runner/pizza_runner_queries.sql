@@ -476,7 +476,29 @@ WHERE order_id IN (7,10);
 
 -- 4. Using your newly generated table - can you join all of the information together to form a table which has the following information for successful deliveries?
 -- customer_id, order_id, runner_id, rating, order_time, pickup_time, Time between order and pickup, Delivery duration, Average speed, Total number of pizzas
-
+SELECT c.customer_id,
+    c.order_id,
+    r.runner_id,
+    cr.runner_rating,
+    c.order_time,
+    r.pickup_time,
+    CONCAT(ROUND((EXTRACT('EPOCH' FROM r.pickup_time) - EXTRACT('EPOCH' FROM c.order_time))/60), ' mins') AS time_btwn_order_pickup,
+    r.duration AS delivery_duration,
+    CONCAT(ROUND(AVG((r.distance)/(r.duration/60::numeric))::numeric, 2), ' km/h') AS avg_speed, 
+    COUNT(c.order_id) AS total_pizzas
+FROM customer_runner_ratings cr
+JOIN customer_orders_temp c
+ON cr.order_id = c.order_id
+JOIN runner_orders_temp r
+ON c.order_id = r.order_id
+GROUP BY c.customer_id,
+    c.order_id,
+    r.runner_id,
+    cr.runner_rating,
+    c.order_time,
+    r.pickup_time,
+    r.duration,
+    r.distance;
 
 
 -- 5. If a Meat Lovers pizza was $12 and Vegetarian $10 fixed prices with no cost for extras and each runner is paid $0.30 per kilometre traveled - how much money does Pizza Runner have left over after these deliveries?
