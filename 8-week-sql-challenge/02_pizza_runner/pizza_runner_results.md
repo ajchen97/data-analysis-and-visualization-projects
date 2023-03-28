@@ -197,16 +197,16 @@ WITH arrival_time AS (
   WHERE r.cancellation IS NULL)
 
 SELECT runner_id, 
-    CONCAT(ROUND(AVG(arrival_time)::numeric, 2), ' mins') AS avg_arrival
+    CONCAT(ROUND(AVG(arrival_time)), ' mins') AS avg_arrival
 FROM arrival_time
 GROUP BY 1
 ORDER BY 1;
 ```
 | runner_id | avg_arrival |
 | --------- | ----------- |
-| 1         | 15.68 mins  |
-| 2         | 10.47 mins  |
-| 3         | 23.72 mins  |
+| 1         | 16 mins     |
+| 2         | 24 mins     |
+| 3         | 10 mins     |
 
 **3. Is there any relationship between the number of pizzas and how long the order takes to prepare?**
 ```sql 
@@ -221,16 +221,16 @@ WITH prep AS (
   GROUP BY 1,3)
 
 SELECT pizza_count, 
-    CONCAT(ROUND(AVG(prep_time)::numeric, 2), ' mins') AS avg_prep
+    CONCAT(ROUND(AVG(prep_time)), ' mins') AS avg_prep
 FROM prep
 GROUP BY 1
 ORDER BY 1;
 ```
 | pizza_count | avg_prep   |
 | ----------- | ---------- |
-| 1           | 12.36 mins |
-| 2           | 18.38 mins |
-| 3           | 29.28 mins |
+| 1           | 12 mins    |
+| 2           | 18 mins    |
+| 3           | 29 mins    |
 
 **4. What was the average distance travelled for each customer?**
 ```sql 
@@ -684,8 +684,20 @@ WHERE order_id IN (2,3,4);
 UPDATE customer_runner_ratings
 SET runner_rating = 5
 WHERE order_id IN (7,10);
-```
 
+SELECT * 
+FROM customer_runner_ratings;
+```
+| order_id | customer_id | runner_id | runner_rating |
+| -------- | ----------- | --------- | ------------- |
+| 1        | 101         | 1         | 1             |
+| 5        | 104         | 3         | 2             |
+| 8        | 102         | 2         | 3             |
+| 2        | 101         | 1         | 4             |
+| 3        | 102         | 1         | 4             |
+| 4        | 103         | 2         | 4             |
+| 7        | 105         | 2         | 5             |
+| 10       | 104         | 1         | 5             |
 
 **4. Using your newly generated table - can you join all of the information together to form a table which has the following information for successful deliveries?**
 - customer_id
@@ -700,8 +712,40 @@ WHERE order_id IN (7,10);
 - Total number of pizzas
 
 ```sql 
-
+SELECT c.customer_id,
+    c.order_id,
+    r.runner_id,
+    cr.runner_rating,
+    c.order_time,
+    r.pickup_time,
+    CONCAT(ROUND((EXTRACT('EPOCH' FROM r.pickup_time) - EXTRACT('EPOCH' FROM c.order_time))/60), ' mins') AS time_btwn_order_pickup,
+    r.duration AS delivery_duration,
+    CONCAT(ROUND(AVG((r.distance)/(r.duration/60::numeric))::numeric, 2), ' km/h') AS avg_speed, 
+    COUNT(c.order_id) AS total_pizzas
+FROM customer_runner_ratings cr
+JOIN customer_orders_temp c
+ON cr.order_id = c.order_id
+JOIN runner_orders_temp r
+ON c.order_id = r.order_id
+GROUP BY c.customer_id,
+    c.order_id,
+    r.runner_id,
+    cr.runner_rating,
+    c.order_time,
+    r.pickup_time,
+    r.duration,
+    r.distance;
 ```
+| customer_id | order_id | runner_id | runner_rating | order_time               | pickup_time              | time_btwn_order_pickup | delivery_duration | avg_speed  | total_pizzas |
+| ----------- | -------- | --------- | ------------- | ------------------------ | ------------------------ | ---------------------- | ----------------- | ---------- | ------------ |
+| 101         | 1        | 1         | 1             | 2020-01-01T18:05:02.000Z | 2020-01-01T18:15:34.000Z | 11 mins                | 32                | 37.50 km/h | 1            |
+| 101         | 2        | 1         | 4             | 2020-01-01T19:00:52.000Z | 2020-01-01T19:10:54.000Z | 10 mins                | 27                | 44.44 km/h | 1            |
+| 102         | 3        | 1         | 4             | 2020-01-02T23:51:23.000Z | 2020-01-03T00:12:37.000Z | 21 mins                | 20                | 40.20 km/h | 2            |
+| 102         | 8        | 2         | 3             | 2020-01-09T23:54:33.000Z | 2020-01-10T00:15:02.000Z | 20 mins                | 15                | 93.60 km/h | 1            |
+| 103         | 4        | 2         | 4             | 2020-01-04T13:23:46.000Z | 2020-01-04T13:53:03.000Z | 29 mins                | 40                | 35.10 km/h | 3            |
+| 104         | 5        | 3         | 2             | 2020-01-08T21:00:29.000Z | 2020-01-08T21:10:57.000Z | 10 mins                | 15                | 40.00 km/h | 1            |
+| 104         | 10       | 1         | 5             | 2020-01-11T18:34:49.000Z | 2020-01-11T18:50:20.000Z | 16 mins                | 10                | 60.00 km/h | 2            |
+| 105         | 7        | 2         | 5             | 2020-01-08T21:20:29.000Z | 2020-01-08T21:30:45.000Z | 10 mins                | 25                | 60.00 km/h | 1            |
 
 
 **5. If a Meat Lovers pizza was $12 and Vegetarian $10 fixed prices with no cost for extras and each runner is paid $0.30 per kilometre traveled - how much money does Pizza Runner have left over after these deliveries?**
