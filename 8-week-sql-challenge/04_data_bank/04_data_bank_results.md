@@ -70,3 +70,6 @@ Data Bank wants to try another option which is a bit more difficult to implement
 
 Special notes:
   - Data Bank wants an initial calculation which does not allow for compounding interest, however they may also be interested in a daily compounding interest calculation so you can try to perform this calculation if you have the stamina! 
+
+### E. Extension Request
+[link]
