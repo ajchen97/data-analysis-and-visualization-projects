@@ -19,7 +19,6 @@ VALUES
   ('4', 'churn', null);
 
 
-
 CREATE TABLE subscriptions (
   customer_id INTEGER,
   plan_id INTEGER,
