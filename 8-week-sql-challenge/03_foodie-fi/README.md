@@ -49,5 +49,3 @@ Danny created Foodie-Fi with a data driven mindset and wanted to ensure all futu
   3. What are some key customer journeys or experiences that you would analyse further to improve customer retention?
   4. If the Foodie-Fi team were to create an exit survey shown to customers who wish to cancel their subscription, what questions would you include in the survey?
   5. What business levers could the Foodie-Fi team use to reduce the customer churn rate? How would you validate the effectiveness of your ideas?</details>
-
-## Notes
