@@ -760,18 +760,16 @@ WITH pizza_costs AS (
   ON c.order_id = r.order_id
       AND r.cancellation IS NULL)
       
-SELECT SUM(pizza_cost-delivery_cost) AS total_profit
+SELECT CONCAT('$', SUM(pizza_cost-delivery_cost)) AS total_profit
 FROM pizza_costs;
 ```
 | total_profit |
 | ------------ |
-| 73.38        |
+| $73.38       |
 
 
 ### E. Bonus Questions
 **1. If Danny wants to expand his range of pizzas - how would this impact the existing data design? Write an INSERT statement to demonstrate what would happen if a new Supreme pizza with all the toppings was added to the Pizza Runner menu?**
 ```sql 
-
+IN PROGRESS
 ```
-
-
