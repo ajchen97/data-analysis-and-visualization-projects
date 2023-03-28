@@ -1,5 +1,4 @@
 -- https://8weeksqlchallenge.com/case-study-2/
--- PostgreSQL
 
 -- A. PIZZA METRICS
 -- 1. How many pizzas were ordered?
