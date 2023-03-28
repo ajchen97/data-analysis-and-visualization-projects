@@ -511,7 +511,7 @@ WITH pizza_costs AS (
   ON c.order_id = r.order_id
       AND r.cancellation IS NULL)
       
-SELECT SUM(pizza_cost-delivery_cost) AS total_profit
+SELECT CONCAT('$', SUM(pizza_cost-delivery_cost)) AS total_profit
 FROM pizza_costs;
 
 
