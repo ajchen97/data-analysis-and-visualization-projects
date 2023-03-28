@@ -611,19 +611,79 @@ ORDER BY 2 DESC;
 ### D. Pricing and Ratings
 **1. If a Meat Lovers pizza costs $12 and Vegetarian costs $10 and there were no charges for changes - how much money has Pizza Runner made so far if there are no delivery fees?**
 ```sql 
+WITH pizza_costs AS (
+  SELECT *,
+      CASE WHEN c.pizza_id = 1 THEN 12 
+          ELSE 10 END AS pizza_cost
+  FROM customer_orders_temp c
+  JOIN runner_orders_temp r
+  ON c.order_id = r.order_id
+      AND r.cancellation IS NULL)
 
+SELECT CONCAT('$', SUM(pizza_cost)) AS total_profit
+FROM pizza_costs;
 ```
-
+| total_profit |
+| ------------ |
+| $138         |
 
 **2. What if there was an additional $1 charge for any pizza extras? Add cheese is $1 extra**
 ```sql 
-
+WITH pizza_costs AS (
+  SELECT *,
+      CASE WHEN c.pizza_id = 1 AND c.extras IS NULL THEN 12 
+          WHEN c.pizza_id = 2 AND c.extras IS NULL THEN 10
+          WHEN c.pizza_id = 1 AND c.extras IS NOT NULL THEN CARDINALITY(c.extras) + 12
+          WHEN c.pizza_id = 2 AND c.extras IS NOT NULL THEN CARDINALITY(c.extras) + 10 END AS pizza_cost
+  FROM customer_orders_temp c
+  JOIN runner_orders_temp r
+  ON c.order_id = r.order_id
+      AND r.cancellation IS NULL)
+    
+SELECT CONCAT('$', SUM(pizza_cost)) AS total_profit
+FROM pizza_costs;
 ```
-
+| total_profit |
+| ------------ |
+| $142         |
 
 **3. The Pizza Runner team now wants to add an additional ratings system that allows customers to rate their runner, how would you design an additional table for this new dataset - generate a schema for this new table and insert your own data for ratings for each successful customer order between 1 to 5.**
 ```sql 
+DROP TABLE IF EXISTS customer_runner_ratings;
 
+CREATE TABLE customer_runner_ratings AS (
+  SELECT c.order_id,
+  	  c.customer_id,
+  	  r.runner_id
+  FROM pizza_runner.customer_orders c
+  JOIN pizza_runner.runner_orders r
+  ON c.order_id = r.order_id
+  	AND r.distance != 'null'
+  GROUP BY 1,2,3
+  ORDER BY 1);
+  
+ALTER TABLE customer_runner_ratings
+	ADD runner_rating INT;
+
+UPDATE customer_runner_ratings
+SET runner_rating = 1
+WHERE order_id = 1;
+
+UPDATE customer_runner_ratings
+SET runner_rating = 2
+WHERE order_id = 5;
+
+UPDATE customer_runner_ratings
+SET runner_rating = 3
+WHERE order_id = 8;
+
+UPDATE customer_runner_ratings
+SET runner_rating = 4
+WHERE order_id IN (2,3,4);
+
+UPDATE customer_runner_ratings
+SET runner_rating = 5
+WHERE order_id IN (7,10);
 ```
 
 
