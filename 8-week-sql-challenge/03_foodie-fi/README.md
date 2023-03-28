@@ -9,8 +9,8 @@ Danny finds a few smart friends to launch his new startup Foodie-Fi in 2020 and 
 Danny created Foodie-Fi with a data driven mindset and wanted to ensure all future investment decisions and new features were decided using data. This case study focuses on using subscription style digital data to answer important business questions.  
 
 ## Datasets
-  - **`plans`:** shows the plan id, name, and price
-  - **`subscriptions`:** captures the start date for a customer's certain plan id, which updates to reflect the date of any plan changes 
+  - **`plans`:** shows the plan_id, plan_name, and price
+  - **`subscriptions`:** captures the customer_id, plan_id, start_date for a customer's certain plan_id, which updates to reflect the date of any plan changes 
 
 ## Entity Relationship Diagram  
 <p align="center"> <img src="https://8weeksqlchallenge.com/images/case-study-3-erd.png" alt="Image">
