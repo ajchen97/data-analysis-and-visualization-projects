@@ -1,3 +1,5 @@
+-- https://8weeksqlchallenge.com/case-study-4/
+
 CREATE SCHEMA data_bank;
 SET search_path = data_bank;
 
