@@ -1,4 +1,4 @@
-### [Project #2](https://www.freecodecamp.org/learn/data-analysis-with-python/data-analysis-with-python-projects/demographic-data-analyzer) - Demographic Data Analyzer
+# [Project #2](https://www.freecodecamp.org/learn/data-analysis-with-python/data-analysis-with-python-projects/demographic-data-analyzer) - Demographic Data Analyzer
 
 ## Instructions
 This project is created using freeCodeCamp's [Replit starter code](https://replit.com/github/freeCodeCamp/boilerplate-demographic-data-analyzer).
@@ -28,4 +28,4 @@ Update the code so all variables set to "None" are set to the appropriate calcul
 
 ## Notes
 - The project was tested using the provided unit tests in the starter code
-- Link to Replit project: []()
+- Link to Replit project: [Demographic Data Analyzer](https://replit.com/@ajchen97/demographic-data-analyzer)
