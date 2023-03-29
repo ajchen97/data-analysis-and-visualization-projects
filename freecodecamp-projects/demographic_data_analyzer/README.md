@@ -12,7 +12,6 @@ Given a dataset of demographic data that was extracted from the 1994 Census data
 |  3 |    53 | Private          |   234721 | 11th        |               7 | Married-civ-spouse | Handlers-cleaners | Husband        | Black  | Male   |              0 |              0 |               40 | United-States    | <=50K    |
 |  4 |    28 | Private          |   338409 | Bachelors   |              13 | Married-civ-spouse | Prof-specialty    | Wife           | Black  | Female |              0 |              0 |               40 | Cuba             | <=50K    |
 
-
 Use Pandas to answer the following questions:
 - How many people of each race are represented in this dataset? This should be a Pandas series with race names as the index labels. (`race` column)
 - What is the average age of men?
