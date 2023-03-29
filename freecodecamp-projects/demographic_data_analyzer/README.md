@@ -1,4 +1,4 @@
-# [Project #2](https://www.freecodecamp.org/learn/data-analysis-with-python/data-analysis-with-python-projects/demographic-data-analyzer) - Demographic Data Analyzer
+# [Demographic Data Analyzer](https://www.freecodecamp.org/learn/data-analysis-with-python/data-analysis-with-python-projects/demographic-data-analyzer)
 
 ## Instructions
 This project is created using freeCodeCamp's [Replit starter code](https://replit.com/github/freeCodeCamp/boilerplate-demographic-data-analyzer).
