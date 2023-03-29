@@ -102,15 +102,26 @@ ORDER BY 2;
 
 **4. What is the customer count and percentage of customers who have churned rounded to 1 decimal place?**
 ```sql 
-
-
+SELECT CONCAT(ROUND(((COUNT(DISTINCT customer_id) FILTER (WHERE plan_id = 4))::numeric/COUNT(DISTINCT customer_id)::numeric*100), 1), '%') AS percent_churned
+FROM foodie_fi.subscriptions;
 ```
+| percent_churned |
+| --------------- |
+| 30.7%           |
 
 **5. How many customers have churned straight after their initial free trial - what percentage is this rounded to the nearest whole number?**
 ```sql 
+WITH next_plan AS (
+  SELECT *, 
+      LEAD(plan_id) OVER (PARTITION BY customer_id ORDER BY start_date) AS next_plan
+  FROM foodie_fi.subscriptions)
 
-
+SELECT CONCAT(ROUND(((COUNT(DISTINCT customer_id) FILTER (WHERE plan_id = 0 AND next_plan = 4))::numeric/COUNT(DISTINCT customer_id)::numeric)*100), '%') AS percent_churned_after_trial
+FROM next_plan;
 ```
+| percent_churned_after_trial |
+| --------------------------- |
+| 9%                          |
 
 **6. What is the number and percentage of customer plans after their initial free trial?**
 ```sql 
