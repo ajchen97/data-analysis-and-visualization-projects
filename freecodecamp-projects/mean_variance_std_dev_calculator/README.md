@@ -1,4 +1,4 @@
-# [Project #1](https://www.freecodecamp.org/learn/data-analysis-with-python/data-analysis-with-python-projects/mean-variance-standard-deviation-calculator) - Mean-Variance-Standard Deviation Calculator
+# [Mean-Variance-Standard Deviation Calculator](https://www.freecodecamp.org/learn/data-analysis-with-python/data-analysis-with-python-projects/mean-variance-standard-deviation-calculator)
 
 ## Instructions
 This project is created using freeCodeCamp's [Replit starter code](https://replit.com/github/freeCodeCamp/boilerplate-mean-variance-standard-deviation-calculator).
