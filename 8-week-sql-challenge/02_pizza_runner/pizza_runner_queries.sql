@@ -24,7 +24,7 @@ JOIN pizza_runner.pizza_names p
 ON c.pizza_id = p.pizza_id
 JOIN runner_orders_temp r
 ON c.order_id = r.order_id
-  AND r.cancellation IS NULL
+    AND r.cancellation IS NULL
 GROUP BY 1;
 
 -- 5. How many Vegetarian and Meatlovers were ordered by each customer?
