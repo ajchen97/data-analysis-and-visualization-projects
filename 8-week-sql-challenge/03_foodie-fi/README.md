@@ -30,7 +30,7 @@ Danny created Foodie-Fi with a data driven mindset and wanted to ensure all futu
   6. What is the number and percentage of customer plans after their initial free trial?
   7. What is the customer count and percentage breakdown of all 5 plan_name values at 2020-12-31?
   8. How many customers have upgraded to an annual plan in 2020?
-  9. How many days on average does it take for a customer to an annual plan from the day they join Foodie-Fi?
+  9. How many days on average does it take for a customer to upgrade to an annual plan from the day they join Foodie-Fi?
   10. Can you further breakdown this average value into 30 day periods (i.e. 0-30 days, 31-60 days etc)?
   11. How many customers downgraded from a pro monthly to a basic monthly plan in 2020?  </details>
   
