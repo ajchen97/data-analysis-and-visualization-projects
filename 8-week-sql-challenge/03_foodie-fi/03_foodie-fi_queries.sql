@@ -51,6 +51,25 @@ SELECT CONCAT(ROUND(((COUNT(DISTINCT customer_id) FILTER (WHERE plan_id = 0 AND 
 FROM next_plan;
  
 -- 6. What is the number and percentage of customer plans after their initial free trial?
+WITH ranks AS (
+  SELECT s.customer_id,
+  	  s.plan_id,
+  	  s.start_date,
+  	  p.plan_name, 
+  	  p.price,
+      RANK() OVER (PARTITION BY s.customer_id ORDER BY s.start_date) AS ranking
+  FROM foodie_fi.subscriptions s
+  JOIN foodie_fi.plans p 
+  ON s.plan_id = p.plan_id)
+  
+SELECT plan_name, 
+	COUNT(DISTINCT customer_id) FILTER (WHERE ranking = 2) AS customer_plans_post_trial,
+	CONCAT(ROUND(((COUNT(DISTINCT customer_id) FILTER (WHERE ranking = 2))::numeric/
+	  (SELECT COUNT(DISTINCT customer_id)::numeric
+	   FROM foodie_fi.subscriptions))*100, 1), '%') AS percent_plans_post_trial 
+FROM ranks
+WHERE plan_name != 'trial'
+GROUP BY 1;
 
 -- 7. What is the customer count and percentage breakdown of all 5 plan_name values at 2020-12-31?
 
