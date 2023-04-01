@@ -203,7 +203,7 @@ WITH annual_start AS (
   SELECT *,
       LEAD(start_date) OVER (PARTITION BY customer_id ORDER BY start_date) AS annual_plan_start
   FROM foodie_fi.subscriptions s
-  WHERE plan_id = 0 OR plan_id = 4
+  WHERE plan_id = 0 OR plan_id = 3
   ORDER BY customer_id)
 
 SELECT FLOOR(AVG(annual_plan_start - start_date)) AS avg_days
@@ -212,7 +212,7 @@ WHERE annual_plan_start IS NOT NULL;
 ```
 | avg_days |
 | -------- |
-| 83       |
+| 104      |
 
 **10. Can you further breakdown this average value into 30 day periods (i.e. 0-30 days, 31-60 days etc)?**
 ```sql 
