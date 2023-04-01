@@ -125,37 +125,55 @@ FROM next_plan;
 
 **6. What is the number and percentage of customer plans after their initial free trial?**
 ```sql 
-
-
+WITH ranks AS (
+  SELECT s.customer_id,
+  	  s.plan_id,
+  	  s.start_date,
+  	  p.plan_name, 
+  	  p.price,
+      RANK() OVER (PARTITION BY s.customer_id ORDER BY s.start_date) AS ranking
+  FROM foodie_fi.subscriptions s
+  JOIN foodie_fi.plans p 
+  ON s.plan_id = p.plan_id)
+  
+SELECT plan_name, 
+	COUNT(DISTINCT customer_id) FILTER (WHERE ranking = 2) AS customer_plans_post_trial,
+	CONCAT(ROUND(((COUNT(DISTINCT customer_id) FILTER (WHERE ranking = 2))::numeric/
+	  (SELECT COUNT(DISTINCT customer_id)::numeric
+	   FROM foodie_fi.subscriptions))*100, 1), '%') AS percent_plans_post_trial 
+FROM ranks
+WHERE plan_name != 'trial'
+GROUP BY 1;
 ```
+| plan_name     | customer_plans_post_trial | percent_plans_post_trial |
+| ------------- | ------------------------- | ------------------------ |
+| basic monthly | 546                       | 54.6%                    |
+| churn         | 92                        | 9.2%                     |
+| pro annual    | 37                        | 3.7%                     |
+| pro monthly   | 325                       | 32.5%                    |
 
 **7. What is the customer count and percentage breakdown of all 5 plan_name values at 2020-12-31?**
 ```sql 
-
 
 ```
 
 **8. How many customers have upgraded to an annual plan in 2020?**
 ```sql 
 
-
 ```
 
 **9. How many days on average does it take for a customer to an annual plan from the day they join Foodie-Fi?**
 ```sql 
-
 
 ```
 
 **10. Can you further breakdown this average value into 30 day periods (i.e. 0-30 days, 31-60 days etc)?**
 ```sql 
 
-
 ```
 
 **11. How many customers downgraded from a pro monthly to a basic monthly plan in 2020?**
 ```sql 
-
 
 ```
 
