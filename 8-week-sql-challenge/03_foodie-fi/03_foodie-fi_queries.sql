@@ -53,29 +53,67 @@ FROM next_plan;
 -- 6. What is the number and percentage of customer plans after their initial free trial?
 WITH ranks AS (
   SELECT s.customer_id,
-  	  s.plan_id,
-  	  s.start_date,
-  	  p.plan_name, 
-  	  p.price,
+      s.plan_id,
+      s.start_date,
+      p.plan_name, 
+      p.price,
       RANK() OVER (PARTITION BY s.customer_id ORDER BY s.start_date) AS ranking
   FROM foodie_fi.subscriptions s
   JOIN foodie_fi.plans p 
   ON s.plan_id = p.plan_id)
   
 SELECT plan_name, 
-	COUNT(DISTINCT customer_id) FILTER (WHERE ranking = 2) AS customer_plans_post_trial,
-	CONCAT(ROUND(((COUNT(DISTINCT customer_id) FILTER (WHERE ranking = 2))::numeric/
-	  (SELECT COUNT(DISTINCT customer_id)::numeric
-	   FROM foodie_fi.subscriptions))*100, 1), '%') AS percent_plans_post_trial 
+    COUNT(DISTINCT customer_id) FILTER (WHERE ranking = 2) AS customer_plans_post_trial,
+    CONCAT(ROUND(((COUNT(DISTINCT customer_id) FILTER (WHERE ranking = 2))::numeric/
+        (SELECT COUNT(DISTINCT customer_id)::numeric
+         FROM foodie_fi.subscriptions))*100, 1), '%') AS percent_plans_post_trial 
 FROM ranks
 WHERE plan_name != 'trial'
 GROUP BY 1;
 
 -- 7. What is the customer count and percentage breakdown of all 5 plan_name values at 2020-12-31?
+WITH next_plans AS (
+  SELECT s.customer_id,
+      p.plan_name,
+      s.plan_id,
+      s.start_date,
+      LEAD(s.plan_id) OVER (PARTITION BY s.customer_id ORDER BY s.start_date) AS next_plan,
+      LEAD(p.plan_name) OVER (PARTITION BY s.customer_id ORDER BY s.start_date) AS next_plan_name,
+      LEAD(s.start_date) OVER (PARTITION BY s.customer_id ORDER BY s.start_date) AS next_plan_date
+  FROM foodie_fi.subscriptions s
+  JOIN foodie_fi.plans p 
+  ON s.plan_id = p.plan_id
+      AND s.start_date <= '2020-12-31')
+
+SELECT plan_name,
+    COUNT(plan_name) FILTER (WHERE next_plan IS NULL) AS plans_count,
+    CONCAT(ROUND(((COUNT(plan_name) FILTER (WHERE next_plan IS NULL))::numeric/
+    	(SELECT COUNT(DISTINCT customer_id)::numeric
+         FROM foodie_fi.subscriptions))*100, 1), '%') AS percent_plans
+FROM next_plans
+GROUP BY 1
+ORDER BY 3;
 
 -- 8. How many customers have upgraded to an annual plan in 2020?
+SELECT COUNT(DISTINCT s.customer_id) AS annual_plans_2020
+FROM foodie_fi.subscriptions s
+JOIN foodie_fi.plans p 
+ON s.plan_id = p.plan_id
+    AND s.plan_id = 3 
+    AND EXTRACT('year' FROM s.start_date) = 2020;
+    
+-- 9. How many days on average does it take for a customer to upgrade to an annual plan from the day they join Foodie-Fi?
+WITH annual_start AS (
+  SELECT *,
+      LEAD(start_date) OVER (PARTITION BY customer_id ORDER BY start_date) AS annual_plan_start
+  FROM foodie_fi.subscriptions s
+  WHERE plan_id = 0 OR plan_id = 4
+  ORDER BY customer_id)
 
--- 9. How many days on average does it take for a customer to an annual plan from the day they join Foodie-Fi?
+SELECT FLOOR(AVG(annual_plan_start - start_date)) AS avg_days
+FROM annual_start
+WHERE annual_plan_start IS NOT NULL;
+
 
 -- 10. Can you further breakdown this average value into 30 day periods (i.e. 0-30 days, 31-60 days etc)?
 
