@@ -14,9 +14,6 @@ A series of case studies created by Danny Ma as a part of the [Data with Danny](
 - Balanced Tree Clothing Co
 - Fresh Segments 
 
-### Scavenger Hunt Handbook
-A [Kaggle](https://www.kaggle.com/code/rtatman/sql-scavenger-hunt-handbook/notebook) notebook of SQL practice problems focusing on specific commands using BigQuery and Python in Kaggle Kernel.
-
 ## Python
 ### [World Happiness Report](https://github.com/ajchen97/data-analysis-and-visualization-projects/tree/main/world-happiness-report)
 An exploratory data analysis project done as a part of [Jovian's Data Analysis with Python: Zero to Pandas](https://jovian.com/learn/data-analysis-with-python-zero-to-pandas) course, using a [Kaggle dataset](https://www.kaggle.com/datasets/mathurinache/world-happiness-report) with data from the World Happiness Report.
