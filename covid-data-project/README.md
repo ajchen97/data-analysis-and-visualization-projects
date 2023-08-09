@@ -8,12 +8,12 @@ In this project, I am exploring global COVID-19 data using PostgreSQL and creati
 - **`covid_vaccinations`:** contains data related to covid vaccinations
   
 ## Information to Explore
-1. What is the total number of cases versus the total number of deaths?
-2. What is the total number of cases versus population?
+1. What is the total number of cases versus the total number of deaths and the percentage of deaths?
+2. What is the total number of cases versus the population and the percentage of infection?
 3. What are the countries with the highest infection rate compared to the population?
 4. What are the countries with the highest death count per population?
 5. Which continents have the highest death count per population?
-6. What is the total population versus vaccinations?
+6. What is the total population versus the total vaccinations and the percentage of the population that has at least one covid vaccination?
 7. Use a CTE to perform Calculation on Partition By in the previous question.
 8. Use a Temp Table to perform Calculation on Partition By in the previous question.
 9. Create a View to store data for later visualizations.
