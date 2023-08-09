@@ -1,5 +1,25 @@
 ## COVID-19 Data Exploration SQL Queries & Results
 
+***Start by selecting the data that will be used from the  `covid_deaths` datase: `location`, `date`, `total_cases`, `new_cases`, `total_deaths`, `population`.**
+```sql 
+SELECT location, CAST(date AS date), total_cases, new_cases, total_deaths, population
+FROM covid_deaths cd
+ORDER BY 1,2
+LIMIT 10;
+```
+|location   |date      |total_cases|new_cases|total_deaths|population|
+|-----------|----------|-----------|---------|------------|----------|
+|Afghanistan|2020-01-03|           |        0|            |  41128772|
+|Afghanistan|2020-01-04|           |        0|            |  41128772|
+|Afghanistan|2020-01-05|           |        0|            |  41128772|
+|Afghanistan|2020-01-06|           |        0|            |  41128772|
+|Afghanistan|2020-01-07|           |        0|            |  41128772|
+|Afghanistan|2020-01-08|           |        0|            |  41128772|
+|Afghanistan|2020-01-09|           |        0|            |  41128772|
+|Afghanistan|2020-01-10|           |        0|            |  41128772|
+|Afghanistan|2020-01-11|           |        0|            |  41128772|
+|Afghanistan|2020-01-12|           |        0|            |  41128772|
+
 **1. What is the total number of cases versus the total number of deaths and the percentage of deaths?**
 
 This shows the likelihood of dying if you contract covid in your country.
