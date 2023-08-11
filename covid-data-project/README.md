@@ -8,8 +8,8 @@ In this project, I am exploring global COVID-19 data using PostgreSQL and creati
 - **`covid_vaccinations`:** contains data related to covid vaccinations
   
 ## Information to Explore
-1. What is the total number of cases versus the total number of deaths and the percentage of deaths?
-2. What is the total number of cases versus the population and the percentage of infection?
+1. What is the total number of cases versus the total number of deaths in each country and the percentage of deaths?
+2. What is the total number of cases versus the population in each country and the percentage of infection?
 3. What are the countries with the highest infection rate compared to the population?
 4. What are the countries with the highest death count per population?
 5. Which continents have the highest death count per population?
