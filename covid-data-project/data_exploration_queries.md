@@ -20,16 +20,16 @@ LIMIT 10;
 |Afghanistan|2020-01-11|           |        0|            |  41128772|
 |Afghanistan|2020-01-12|           |        0|            |  41128772|
 
-**1. What is the total number of cases versus the total number of deaths and the percentage of deaths?**
+**1. What is the total number of cases versus the total number of deaths in each country and the percentage of deaths?**
 
-This shows the likelihood of dying if you contract covid in your country.
+The percentage shows the likelihood of dying if you contract covid in your country.
 ```sql 
 
 
 ```
 
 
-**2. What is the total number of cases versus the population and the percentage of infection**
+**2. What is the total number of cases versus the population in each country and the percentage of infection?**
 
 This shows what percentage of the population is infected with Covid.
 ```sql 
