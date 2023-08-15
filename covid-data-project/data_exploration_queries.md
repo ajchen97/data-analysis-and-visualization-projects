@@ -133,20 +133,21 @@ France|167985
 
 **5. Which continents have the highest death count per population?**
 ```sql 
-SELECT continent, MAX(total_deaths) AS total_deaths_count
+SELECT location, MAX(total_deaths) AS total_deaths_count
 FROM covid_deaths cd
-WHERE continent IS NOT NULL 
+WHERE continent IS NULL 
+  AND location NOT IN ('World', 'High income', 'Upper middle income', 'Lower middle income', 'European Union', 'Low income')
 GROUP BY 1
 ORDER BY 2 DESC;
 ```
 continent|total_deaths_count
 |-|-|
-North America|1127152
-South America|704659
-Asia|531917
-Europe|399854
-Africa|102595
-Oceania|22482
+Europe|2074440
+Asia|1632364
+North America|1602820
+South America|1356054
+Africa|259001
+Oceania|29046
 
 **6. What is the total number of cases versus deaths globally, and the percentage of deaths?**
 ```sql 
