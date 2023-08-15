@@ -30,7 +30,7 @@ SELECT location, date, total_cases, total_deaths,
   ROUND((total_deaths/CAST(total_cases AS numeric))*100, 2) AS death_percentage
 FROM covid_deaths cd
 WHERE location ILIKE '%united states'
-  AND date BETWEEN '2020-08-01' AND '2020-08-15'
+--  AND date BETWEEN '2020-08-01' AND '2020-08-15'
 ORDER BY 1,2;
 ```
 |location |date |total_cases |total_deaths |death_percentage |
@@ -60,7 +60,7 @@ SELECT location, date, total_cases, population,
   ROUND((CAST(total_cases AS numeric)/CAST(population AS numeric))*100, 2) AS population_infection_percentage
 FROM covid_deaths cd
 WHERE location ILIKE '%united states'
-  AND date BETWEEN '2020-08-01' AND '2020-08-15'
+--  AND date BETWEEN '2020-08-01' AND '2020-08-15'
 ORDER BY 1,2;
 ```
 |location|date|total_cases|population|population_infection_percentage|
@@ -88,7 +88,7 @@ SELECT location, population,
   MAX(total_cases) AS highest_infection_rate, 
   MAX(ROUND((CAST(total_cases AS numeric)/CAST(population AS numeric))*100, 2)) AS population_infection_percentage
 FROM covid_deaths cd
-WHERE total_cases IS NOT NULL
+-- WHERE total_cases IS NOT NULL
 GROUP BY 1,2
 ORDER BY 4 DESC
 LIMIT 10;
@@ -112,7 +112,7 @@ Andorra|79843|48015|60.14
 SELECT location, MAX(total_deaths) AS total_deaths_count
 FROM covid_deaths cd
 WHERE continent IS NOT NULL 
-  AND total_deaths IS NOT NULL
+--  AND total_deaths IS NOT NULL
 GROUP BY 1
 ORDER BY 2 DESC
 LIMIT 10;
