@@ -20,4 +20,6 @@ In this project, I am exploring global COVID-19 data using PostgreSQL and creati
 10. Create a View to store data for later visualizations.
 
 ## Data Visualization
-[Dashboard in Tableau](https://public.tableau.com/app/profile/amandachen/viz/COVID-19ProjectDashboard_16921382026580/Dashboard1)
+Below is a screenshot of a dashboard of visualizations created in Tableau. To view the live dashboard, visit this [link](https://public.tableau.com/app/profile/amandachen/viz/COVID-19ProjectDashboard_16921382026580/Dashboard1).
+
+![image](https://github.com/ajchen97/data-analysis-and-visualization-projects/assets/19737483/24ecc2a4-19da-49ad-bfd8-b865c1308c63)
