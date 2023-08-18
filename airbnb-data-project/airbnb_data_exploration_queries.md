@@ -135,13 +135,12 @@ Hotel room|664.65
 
 **8. How many listings of each bedroom (1 bdrm, 2 bdrm, etc) are there?**
 ```sql
-SELECT bedrooms,
+SELECT CASE WHEN bedrooms < 6 THEN bedrooms::varchar ELSE '6+' END AS bedrooms,
   COUNT(id) AS listings_count,
   COUNT(id)::numeric/(SELECT COUNT(*) FROM listings) AS listings_percentage
 FROM listings
 WHERE bedrooms IS NOT NULL
 GROUP BY 1
-HAVING COUNT(id) > 10 -- accounting for outliers that have less than 10 listings each
 ORDER BY 1;
 ```
 |bedrooms|listings_count|listings_percentage|
@@ -151,20 +150,15 @@ ORDER BY 1;
 3|4806|0.10808744152572867938
 4|2369|0.05327905721482547679
 5|946|0.02127563871896365599
-6|298|0.00670205109751709248
-7|117|0.00263134220942785175
-8|44|0.00098956459157970493
-9|18|0.00040482187837351565
-10|13|0.00029237135660309464
+6+|516|0.01160489384670744872
 
 **9. What is the average price per bedroom listing?**
 ```sql
-SELECT bedrooms,
+SELECT CASE WHEN bedrooms < 6 THEN bedrooms::varchar ELSE '6+' END AS bedrooms,
   ROUND(AVG(price), 2) AS avg_price_per_listing
 FROM listings
 WHERE bedrooms IS NOT NULL
 GROUP BY 1
-HAVING COUNT(bedrooms) > 10
 ORDER BY 1;
 ```
 |bedrooms|avg_price_per_listing|
@@ -174,11 +168,7 @@ ORDER BY 1;
 3|434.08
 4|754.40
 5|1189.18
-6|1854.24
-7|3251.04
-8|4019.77
-9|3930.56
-10|2963.62
+6+|2489.14
 
 **10. How many room type listings are instant bookable?**
 ```sql
