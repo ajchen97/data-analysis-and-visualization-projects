@@ -38,7 +38,8 @@ ORDER BY 1;
 
 -- Room Type Listings Count
 SELECT room_type,
-	COUNT(id) AS listings_count
+	COUNT(id) AS listings_count,
+	COUNT(id)::numeric/(SELECT COUNT(*) FROM listings) AS listings_percentage
 FROM listings
 GROUP BY 1;
 
@@ -50,11 +51,12 @@ GROUP BY 1;
 
 -- Bedroom Listings Count
 SELECT bedrooms,
-  COUNT(id) AS listings_count
+	COUNT(id) AS listings_count,
+	COUNT(id)::numeric/(SELECT COUNT(*) FROM listings) AS listings_percentage
 FROM listings
 WHERE bedrooms IS NOT NULL
 GROUP BY 1
-HAVING COUNT(id) > 10
+HAVING COUNT(id) > 10 -- accounting for outliers that have less than 10 listings each
 ORDER BY 1;
 
 -- Avg Price per Bedroom Listing
