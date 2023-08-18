@@ -186,17 +186,26 @@ WITH instant_book AS (
   SELECT room_type,
     instant_bookable,
     DENSE_RANK() OVER (PARTITION BY room_type ORDER BY instant_bookable DESC) AS book_rank
-  FROM listings)
+  FROM listings),
+total_instant_book AS (
+  SELECT room_type,
+    (COUNT(book_rank) FILTER (WHERE book_rank = 1))::numeric AS yes_instant_bookable,
+    (COUNT(book_rank) FILTER (WHERE book_rank = 2))::numeric AS not_instant_bookable,
+    COUNT(room_type)::numeric AS total_listings
+FROM instant_book
+GROUP BY 1)
 
 SELECT room_type,
-  COUNT(book_rank) FILTER (WHERE book_rank = 1) AS yes_instant_bookable,
-  COUNT(book_rank) FILTER (WHERE book_rank = 2) AS not_instant_bookable
-FROM instant_book
-GROUP BY 1;
+  yes_instant_bookable,
+  not_instant_bookable,
+  total_listings,
+  ROUND(yes_instant_bookable/total_listings, 3) AS percent_yes, 
+  ROUND(not_instant_bookable/total_listings, 3) AS percent_no
+FROM total_instant_book;
 ```
-|room_type|yes_instant_bookable|not_instant_bookable|
-|-|-|-|
-Entire home/apt|8678|22345
-Hotel room|45|33
-Private room|4343|8280
-Shared room|161|579
+|room_type|yes_instant_bookable|not_instant_bookable|total_listings|percent_yes|percent_no|
+|-|-|-|-|-|-|
+Entire home/apt|8678|22345|31023|0.280|0.720
+Hotel room|45|33|78|0.577|0.423
+Private room|4343|8280|12623|0.344|0.656
+Shared room|161|579|740|0.218|0.782
