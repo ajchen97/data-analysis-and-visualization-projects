@@ -179,3 +179,24 @@ ORDER BY 1;
 8|4019.77
 9|3930.56
 10|2963.62
+
+**10. How many room type listings are instant bookable?**
+```sql
+WITH instant_book AS (
+  SELECT room_type,
+    instant_bookable,
+    DENSE_RANK() OVER (PARTITION BY room_type ORDER BY instant_bookable DESC) AS book_rank
+  FROM listings)
+
+SELECT room_type,
+  COUNT(book_rank) FILTER (WHERE book_rank = 1) AS yes_instant_bookable,
+  COUNT(book_rank) FILTER (WHERE book_rank = 2) AS not_instant_bookable
+FROM instant_book
+GROUP BY 1;
+```
+|room_type|yes_instant_bookable|not_instant_bookable|
+|-|-|-|
+Entire home/apt|8678|22345
+Hotel room|45|33
+Private room|4343|8280
+Shared room|161|579
