@@ -107,8 +107,8 @@ Arleta|344.78
 **6. How many listings of each room type (private room, entire home, etc) are there?**
 ```sql
 SELECT room_type,
-  COUNT(id) AS listings_count,
-  COUNT(id)::numeric/(SELECT COUNT(*) FROM listings) AS listings_percentage
+  COUNT(DISTINCT id) AS listings_count,
+  COUNT(DISTINCT id)::numeric/(SELECT COUNT(DISTINCT id) FROM listings) AS listings_percentage
 FROM listings
 GROUP BY 1;
 ```
@@ -136,8 +136,8 @@ Hotel room|664.65
 **8. How many listings of each bedroom (1 bdrm, 2 bdrm, etc) are there?**
 ```sql
 SELECT CASE WHEN bedrooms < 6 THEN bedrooms::varchar ELSE '6+' END AS bedrooms,
-  COUNT(id) AS listings_count,
-  COUNT(id)::numeric/(SELECT COUNT(*) FROM listings) AS listings_percentage
+  COUNT(DISTINCT id) AS listings_count,
+  COUNT(DISTINCT id)::numeric/(SELECT COUNT(DISTINCT id) FROM listings) AS listings_percentage
 FROM listings
 WHERE bedrooms IS NOT NULL
 GROUP BY 1
