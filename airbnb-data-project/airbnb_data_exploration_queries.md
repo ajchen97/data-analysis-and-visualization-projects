@@ -107,16 +107,17 @@ Arleta|344.78
 **6. How many listings of each room type (private room, entire home, etc) are there?**
 ```sql
 SELECT room_type,
-  COUNT(id) AS listings_count
+  COUNT(id) AS listings_count,
+  COUNT(id)::numeric/(SELECT COUNT(*) FROM listings) AS listings_percentage
 FROM listings
 GROUP BY 1;
 ```
-|room_type|listings_count|
-|-|-|
-Entire home/apt|31023
-Shared room|740
-Private room|12623
-Hotel room|78
+|room_type|listings_count|listings_percentage|
+|-|-|-|
+Entire home/apt|31023|0.69771050737675422814
+Shared room|740|0.01664267722202231018
+Private room|12623|0.28389258726160489385
+Hotel room|78|0.00175422813961856783
 
 **7. What is the average price per room type listing?**
 ```sql
@@ -135,25 +136,26 @@ Hotel room|664.65
 **8. How many listings of each bedroom (1 bdrm, 2 bdrm, etc) are there?**
 ```sql
 SELECT bedrooms,
-  COUNT(id) AS listings_count
+  COUNT(id) AS listings_count,
+  COUNT(id)::numeric/(SELECT COUNT(*) FROM listings) AS listings_percentage
 FROM listings
 WHERE bedrooms IS NOT NULL
 GROUP BY 1
 HAVING COUNT(id) > 10 -- accounting for outliers that have less than 10 listings each
 ORDER BY 1;
 ```
-|bedrooms|listings_count|
-|-|-|
-1|13118
-2|7957
-3|4806
-4|2369
-5|946
-6|298
-7|117
-8|44
-9|18
-10|13
+|bedrooms|listings_count|listings_percentage|
+|-|-|-|
+1|13118|0.29502518891687657431
+2|7957|0.17895376034544800288
+3|4806|0.10808744152572867938
+4|2369|0.05327905721482547679
+5|946|0.02127563871896365599
+6|298|0.00670205109751709248
+7|117|0.00263134220942785175
+8|44|0.00098956459157970493
+9|18|0.00040482187837351565
+10|13|0.00029237135660309464
 
 **9. What is the average price per bedroom listing?**
 ```sql
