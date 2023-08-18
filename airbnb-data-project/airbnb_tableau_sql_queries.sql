@@ -52,10 +52,19 @@ WITH instant_book AS (
   SELECT room_type,
     instant_bookable,
     DENSE_RANK() OVER (PARTITION BY room_type ORDER BY instant_bookable DESC) AS book_rank
-  FROM listings)
+  FROM listings),
+total_instant_book AS (
+  SELECT room_type,
+    (COUNT(book_rank) FILTER (WHERE book_rank = 1))::numeric AS yes_instant_bookable,
+    (COUNT(book_rank) FILTER (WHERE book_rank = 2))::numeric AS not_instant_bookable,
+    COUNT(room_type)::numeric AS total_listings
+FROM instant_book
+GROUP BY 1)
 
 SELECT room_type,
-  COUNT(book_rank) FILTER (WHERE book_rank = 1) AS yes_instant_bookable,
-  COUNT(book_rank) FILTER (WHERE book_rank = 2) AS not_instant_bookable
-FROM instant_book
-GROUP BY 1;
+  yes_instant_bookable,
+  not_instant_bookable,
+  total_listings,
+  ROUND(yes_instant_bookable/total_listings, 3) AS percent_yes, 
+  ROUND(not_instant_bookable/total_listings, 3) AS percent_no
+FROM total_instant_book;
