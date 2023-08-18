@@ -17,8 +17,8 @@ ORDER BY 1;
 
 -- Room Type Listings Count
 SELECT room_type,
-  COUNT(id) AS listings_count,
-  COUNT(id)::numeric/(SELECT COUNT(*) FROM listings) AS listings_percentage
+  COUNT(DISTINCT id) AS listings_count,
+  COUNT(DISTINCT id)::numeric/(SELECT COUNT(DISTINCT id) FROM listings) AS listings_percentage
 FROM listings
 GROUP BY 1;
 
@@ -30,8 +30,8 @@ GROUP BY 1;
 
 -- Bedroom Listings Count
 SELECT CASE WHEN bedrooms < 6 THEN bedrooms::varchar ELSE '6+' END AS bedrooms,
-  COUNT(id) AS listings_count,
-  COUNT(id)::numeric/(SELECT COUNT(*) FROM listings) AS listings_percentage
+  COUNT(DISTINCT id) AS listings_count,
+  COUNT(DISTINCT id)::numeric/(SELECT COUNT(DISTINCT id) FROM listings) AS listings_percentage
 FROM listings
 WHERE bedrooms IS NOT NULL
 GROUP BY 1
