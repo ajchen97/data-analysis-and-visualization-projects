@@ -16,6 +16,8 @@ A series of case studies created by Danny Ma as a part of the [Data with Danny](
 
 ### [COVID-19 Data Exploration & Visualization](https://github.com/ajchen97/data-analysis-and-visualization-projects/tree/main/covid-data-project)
 
+### [Airbnb Data Exploration & Visualization](https://github.com/ajchen97/data-analysis-and-visualization-projects/tree/main/airbnb-data-project)
+
 
 ## Python
 ### [World Happiness Report](https://github.com/ajchen97/data-analysis-and-visualization-projects/tree/main/world-happiness-report)
@@ -32,3 +34,4 @@ A series of projects from [freeCodeCamp's Data Analysis with Python](https://www
 ## Tableau
 ### [My Tableau Public Profile](https://public.tableau.com/app/profile/amandachen)
 - [COVID-19 Data Visualization Dashboard](https://public.tableau.com/app/profile/amandachen/viz/COVID-19ProjectDashboard_16921382026580/Dashboard1)
+- [Airbnb Data Visualization Dashboard](https://public.tableau.com/app/profile/amandachen/viz/AirbnbProjectDashboard_16924029895140/Dashboard1)
